@@ -1,0 +1,4320 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>时代光华-AI陪练 体系化分析</title>
+  <style>
+    :root {
+      --page: #eef1f4;
+      --ink: #121417;
+      --muted: #66707c;
+      --soft: #8a94a1;
+      --panel: #ffffff;
+      --panel-2: #f7f9fb;
+      --line: rgba(30, 40, 55, .12);
+      --line-strong: rgba(30, 40, 55, .2);
+      --dark: #101317;
+      --dark-2: #181d23;
+      --dark-3: #222832;
+      --white-70: rgba(255,255,255,.7);
+      --white-50: rgba(255,255,255,.5);
+      --blue: #2f7df6;
+      --cyan: #15b9d1;
+      --green: #31a66a;
+      --orange: #d98b28;
+      --red: #d55d52;
+      --purple: #7d62e6;
+      --gold: #c7a35a;
+      --radius: 8px;
+      --shadow: 0 18px 55px rgba(20, 30, 45, .14);
+      --shadow-soft: 0 12px 35px rgba(20, 30, 45, .08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--page);
+      line-height: 1.55;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .shell {
+      width: min(1440px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, .88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(30,40,55,.1);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(47,125,246,.9), rgba(21,185,209,.9)),
+        #2f7df6;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.16) inset, 0 12px 30px rgba(47,125,246,.25);
+    }
+
+    .brand-mark span {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,.92);
+      border-radius: 50%;
+      position: relative;
+      display: block;
+    }
+
+    .brand-mark span::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      right: -5px;
+      bottom: -4px;
+      border-right: 2px solid rgba(255,255,255,.92);
+      transform: rotate(-35deg);
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      background: #f6f8fb;
+      border-radius: 10px;
+    }
+
+    .nav a {
+      color: #4b5563;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      transition: .18s ease;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 8px 18px rgba(47,125,246,.18);
+    }
+
+    .hero {
+      color: var(--ink);
+      padding: 34px 0 28px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.94), rgba(238,241,244,.98)),
+        var(--page);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) 430px;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: clamp(30px, 4vw, 56px);
+      line-height: 1.06;
+      letter-spacing: 0;
+      max-width: 900px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 820px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .hero-insights {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+      max-width: 930px;
+    }
+
+    .hero-insight {
+      min-height: 104px;
+      padding: 13px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-insight b {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .hero-insight span {
+      color: var(--muted);
+      font-size: 12px;
+      display: block;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      min-height: 42px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--ink);
+      background: #fff;
+      box-shadow: 0 8px 26px rgba(0,0,0,.12);
+      transition: .18s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 720;
+      line-height: 1;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn.dark {
+      color: #2f3742;
+      background: #fff;
+      box-shadow: none;
+      border: 1px solid var(--line-strong);
+    }
+
+    .btn.dark:hover {
+      color: var(--ink);
+      background: #f7f9fb;
+      border-color: rgba(47,125,246,.28);
+    }
+
+    .btn.primary {
+      color: #fff;
+      background: #2f7df6;
+      box-shadow: 0 12px 30px rgba(47,125,246,.24);
+    }
+
+    .btn.primary:hover {
+      background: #256ee2;
+      box-shadow: 0 14px 34px rgba(47,125,246,.3);
+    }
+
+    .hero-panel {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,249,251,.98)),
+        #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      min-height: 300px;
+    }
+
+    .hero-panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+
+    .small-muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      padding: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 94px;
+      box-shadow: 0 8px 22px rgba(20,30,45,.05);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin: 6px 0 8px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .mini-track {
+      height: 5px;
+      border-radius: 20px;
+      background: #e5ebf2;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .mini-track i {
+      display: block;
+      height: 100%;
+      width: var(--w);
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: inherit;
+    }
+
+    main {
+      padding-bottom: 46px;
+    }
+
+    section {
+      margin-top: 22px;
+      scroll-margin-top: 82px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin: 0 0 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .exec-board {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .thesis-panel {
+      background: linear-gradient(135deg, rgba(255,255,255,.96), rgba(247,249,251,.98)), #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thesis-panel::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--blue), var(--cyan));
+    }
+
+    .thesis-panel h2 {
+      margin: 0 0 10px;
+      font-size: 23px;
+      letter-spacing: 0;
+    }
+
+    .thesis-panel p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .summary-rail {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+      position: relative;
+    }
+
+    .summary-rail::before {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 34px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(47,125,246,.22), rgba(21,185,209,.45), rgba(49,166,106,.28));
+    }
+
+    .rail-step {
+      position: relative;
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .step-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: 0;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 14px 30px rgba(47,125,246,.18);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-icon.green { background: linear-gradient(135deg, var(--green), var(--cyan)); }
+    .step-icon.orange { background: linear-gradient(135deg, var(--orange), var(--gold)); }
+    .step-icon.purple { background: linear-gradient(135deg, var(--purple), var(--blue)); }
+
+    .rail-step b {
+      display: block;
+      font-size: 14px;
+    }
+
+    .rail-step span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .priority-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .priority-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 32px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(30,40,55,.1);
+      background: #fff;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .priority-chip:hover {
+      border-color: rgba(47,125,246,.28);
+      background: rgba(47,125,246,.05);
+    }
+
+    .priority-chip.active {
+      border-color: rgba(47,125,246,.42);
+      color: #1f5fca;
+      background: rgba(47,125,246,.08);
+    }
+
+    .priority-chip i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .priority-chip:nth-child(2) i { background: var(--green); }
+    .priority-chip:nth-child(3) i { background: var(--orange); }
+    .priority-chip:nth-child(4) i { background: var(--purple); }
+    .priority-chip:nth-child(5) i { background: var(--cyan); }
+
+    .role-count {
+      color: var(--soft);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .value-panel {
+      background: var(--dark);
+      color: #fff;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .value-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(47,125,246,.16), transparent 210px),
+        radial-gradient(circle at 90% 20%, rgba(199,163,90,.16), transparent 230px);
+      pointer-events: none;
+    }
+
+    .value-panel > * { position: relative; }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .proof-card {
+      min-height: 112px;
+      border: 1px solid rgba(255,255,255,.09);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+      border-radius: 10px;
+      padding: 12px;
+      display: grid;
+      align-content: space-between;
+      gap: 10px;
+    }
+
+    .proof-card strong {
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .proof-card b {
+      display: block;
+      margin-top: 5px;
+      color: #fff;
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .proof-card span {
+      color: var(--white-70);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .proof-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #111827;
+      background: linear-gradient(135deg, #fff, #bfefff);
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .proof-card:nth-child(2) .proof-mark { background: linear-gradient(135deg, #fff, #d6f7df); }
+    .proof-card:nth-child(3) .proof-mark { background: linear-gradient(135deg, #fff, #ffe0ad); }
+    .proof-card:nth-child(4) .proof-mark { background: linear-gradient(135deg, #fff, #ded7ff); }
+    .proof-card:nth-child(5) .proof-mark { background: linear-gradient(135deg, #fff, #cce7ff); }
+    .proof-card:nth-child(6) .proof-mark { background: linear-gradient(135deg, #fff, #c9f8ef); }
+
+    .value-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .value-row {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 12px;
+      padding: 11px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .value-row b {
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .value-row span {
+      color: var(--white-70);
+      font-size: 13px;
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr) 340px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      min-height: 670px;
+    }
+
+    .sidebar {
+      background: #f6f8fb;
+      border-right: 1px solid var(--line);
+      padding: 16px;
+    }
+
+    .side-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .filter-stack {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .filter-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #374151;
+      border-radius: 8px;
+      padding: 10px 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: .16s ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(47,125,246,.06);
+      border-color: rgba(47,125,246,.18);
+    }
+
+    .filter-btn.active {
+      background: #101317;
+      color: #fff;
+      border-color: #101317;
+      box-shadow: 0 10px 24px rgba(16,19,23,.18);
+    }
+
+    .filter-btn span:last-child {
+      font-size: 12px;
+      opacity: .72;
+    }
+
+    .select-row {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .field input, .field select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+    }
+
+    .content-pane {
+      background:
+        linear-gradient(180deg, rgba(16,19,23,.035), rgba(16,19,23,0) 180px),
+        #fff;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .pane-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      width: min(340px, 100%);
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      box-shadow: 0 4px 14px rgba(20,30,45,.05);
+    }
+
+    .search-box::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      border: 2px solid #7d8794;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      box-shadow: 6px 6px 0 -5px #7d8794;
+    }
+
+    .search-box input {
+      border: 0;
+      outline: none;
+      min-width: 180px;
+      flex: 1;
+      color: var(--ink);
+      background: transparent;
+      font-size: 14px;
+    }
+
+    .subcat-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 0 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .subcat-btn {
+      flex: 0 0 auto;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #4b5563;
+      border-radius: 8px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      transition: .16s ease;
+    }
+
+    .subcat-btn:hover {
+      border-color: rgba(47,125,246,.28);
+      background: rgba(47,125,246,.05);
+    }
+
+    .subcat-btn.active {
+      color: #fff;
+      border-color: var(--dark);
+      background: var(--dark);
+    }
+
+    .subcat-btn span {
+      opacity: .68;
+      font-size: 12px;
+    }
+
+    .sort-stack {
+      display: grid;
+      gap: 8px;
+      min-width: min(100%, 520px);
+    }
+
+    .segmented {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      background: #eef2f6;
+      border-radius: 9px;
+      border: 1px solid var(--line);
+    }
+
+    .segmented button {
+      border: 0;
+      background: transparent;
+      border-radius: 7px;
+      padding: 7px 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .segmented button.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 4px 12px rgba(20,30,45,.08);
+    }
+
+    .sort-segmented {
+      display: inline-grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+    }
+
+    .sort-segmented button {
+      padding: 8px 10px;
+      font-size: 12px;
+      display: grid;
+      gap: 1px;
+      text-align: left;
+      min-height: 46px;
+    }
+
+    .sort-segmented button b {
+      color: inherit;
+      font-size: 13px;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .sort-segmented button span {
+      color: var(--soft);
+      font-size: 11px;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .sort-segmented button.active span {
+      color: #4f5a66;
+    }
+
+    .sort-explainer {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 10px;
+      align-items: center;
+      min-height: 44px;
+      padding: 9px 11px;
+      border: 1px solid rgba(30,40,55,.1);
+      border-radius: 8px;
+      background: rgba(247,249,251,.88);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sort-explainer b {
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .sort-explainer span {
+      color: var(--muted);
+    }
+
+    .sort-explainer i {
+      font-style: normal;
+      color: #2f67c7;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      align-content: start;
+      max-height: 590px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .scenario-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.88);
+      padding: 13px;
+      min-height: 190px;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      transition: .18s ease;
+    }
+
+    .scenario-card:hover {
+      border-color: rgba(47,125,246,.34);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .scenario-card.selected {
+      border-color: rgba(47,125,246,.72);
+      box-shadow: 0 0 0 1px rgba(47,125,246,.18), 0 12px 30px rgba(47,125,246,.12);
+    }
+
+    .scenario-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .scenario-card h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .check {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: transparent;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+    }
+
+    .scenario-card.selected .check {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 23px;
+      padding: 0 7px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #47515d;
+      background: #eef2f6;
+      border: 1px solid rgba(30,40,55,.08);
+    }
+
+    .tag.hot { color: #0f5f7a; background: rgba(21,185,209,.1); }
+    .tag.pay { color: #7a4b0f; background: rgba(217,139,40,.12); }
+    .tag.gap { color: #7a1f18; background: rgba(213,93,82,.1); }
+    .tag.source { color: #245a39; background: rgba(49,166,106,.1); }
+    .tag.trend { color: #4d3a87; background: rgba(125,98,230,.1); }
+
+    .scenario-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .score-block {
+      display: grid;
+      gap: 6px;
+      padding-top: 2px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 62px 1fr 32px;
+      gap: 8px;
+      align-items: center;
+      min-height: 22px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .score-row.is-active {
+      color: #235fc6;
+    }
+
+    .score-row.is-active .score-label b,
+    .score-row.is-active .score-value {
+      color: #1f5fca;
+    }
+
+    .score-label {
+      min-width: 0;
+    }
+
+    .score-label b {
+      color: #222832;
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .score-label span {
+      display: none;
+    }
+
+    .score-value {
+      font-weight: 760;
+      color: #222832;
+      line-height: 1.1;
+      text-align: right;
+    }
+
+    .score-value span {
+      display: none;
+    }
+
+    .bar {
+      height: 6px;
+      border-radius: 20px;
+      background: #e6ebf1;
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      width: var(--w);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+    }
+
+    .score-row.value-score .bar i { background: linear-gradient(90deg, var(--orange), var(--gold)); }
+    .score-row.coverage-score .bar i { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+    .insight {
+      background:
+        linear-gradient(180deg, rgba(16,19,23,.96), rgba(16,19,23,.92)),
+        var(--dark);
+      color: #fff;
+      padding: 18px;
+      border-left: 1px solid rgba(255,255,255,.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .insight::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(47,125,246,.12), transparent 190px),
+        radial-gradient(circle at 85% 10%, rgba(21,185,209,.16), transparent 240px);
+      pointer-events: none;
+    }
+
+    .insight > * { position: relative; }
+
+    .selection-box {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.055);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .selection-box h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    .big-number {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .big-number strong {
+      font-size: 42px;
+      line-height: 1;
+    }
+
+    .big-number span {
+      color: var(--white-50);
+      font-size: 13px;
+    }
+
+    .selected-list {
+      display: grid;
+      gap: 8px;
+      max-height: 250px;
+      overflow: auto;
+      margin-top: 10px;
+    }
+
+    .selected-item {
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+      border-radius: 8px;
+      padding: 9px;
+      display: grid;
+      gap: 3px;
+    }
+
+    .selected-item strong {
+      font-size: 13px;
+    }
+
+    .selected-item span {
+      color: var(--white-50);
+      font-size: 12px;
+    }
+
+    .recommendation {
+      display: grid;
+      gap: 8px;
+    }
+
+    .rec-row {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 10px;
+      padding: 10px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .rec-row:first-child { border-top: 0; }
+    .rec-row b { color: #fff; font-size: 13px; }
+    .rec-row span { color: var(--white-70); font-size: 13px; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+    }
+
+    .module-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .module-card.dark {
+      color: #fff;
+      background: var(--dark);
+      border-color: rgba(255,255,255,.08);
+    }
+
+    .module-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 16px 0;
+    }
+
+    .module-card-head h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .module-body {
+      padding: 16px;
+    }
+
+    .problem-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .problem-tabs button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 9px 11px;
+      transition: .16s ease;
+    }
+
+    .problem-tabs button.active {
+      color: #fff;
+      background: var(--dark);
+      border-color: var(--dark);
+    }
+
+    .problem-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .problem-item {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 13px;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 1fr 118px;
+      gap: 16px;
+    }
+
+    .problem-item h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .problem-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .priority {
+      align-self: start;
+      border-radius: 8px;
+      padding: 8px 9px;
+      background: #f3f6f9;
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .priority b {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .workflow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 11px;
+      align-items: start;
+      padding: 11px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 9px;
+    }
+
+    .flow-step i {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(47,125,246,.22);
+      color: #9bc2ff;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .flow-step b {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .flow-step span {
+      display: block;
+      color: var(--white-70);
+      font-size: 13px;
+    }
+
+    .matrix-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .matrix-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      gap: 12px;
+    }
+
+    .matrix-toolbar h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .table-scroll {
+      overflow: auto;
+    }
+
+    .competitor-visual {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr) 310px;
+      min-height: 650px;
+    }
+
+    .battle-sidebar {
+      border-right: 1px solid var(--line);
+      background: #f7fafc;
+      padding: 18px;
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+
+    .battle-side-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .vendor-stack {
+      display: grid;
+      gap: 8px;
+    }
+
+    .vendor-side-card {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--vendor-color);
+      border-radius: 10px;
+      background: #fff;
+      padding: 11px 12px;
+      display: grid;
+      gap: 6px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      transition: .16s ease;
+    }
+
+    .vendor-side-card:hover,
+    .vendor-side-card.active {
+      transform: translateX(2px);
+      border-color: color-mix(in srgb, var(--vendor-color) 45%, var(--line));
+      box-shadow: 0 12px 26px rgba(15,23,42,.08);
+    }
+
+    .vendor-side-card.active {
+      background: linear-gradient(180deg, rgba(47,125,246,.06), #fff);
+    }
+
+    .vendor-side-card b {
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .vendor-side-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .basis-box {
+      border: 1px solid rgba(47,125,246,.16);
+      background: rgba(47,125,246,.055);
+      border-radius: 10px;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .basis-box b {
+      display: block;
+      color: #235fbf;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .battle-main {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      min-width: 0;
+    }
+
+    .battle-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .battle-kpi {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg,#fff,#f8fafc);
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 92px;
+    }
+
+    .battle-kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .battle-kpi b {
+      display: block;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .battle-kpi small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .vendor-snapshot {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .vendor-card {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 11px;
+      padding: 14px;
+      min-height: 178px;
+      display: grid;
+      gap: 11px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vendor-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 3px;
+      background: var(--vendor-color);
+    }
+
+    .vendor-card.current {
+      background: linear-gradient(180deg, rgba(47,125,246,.06), #fff);
+      border-color: rgba(47,125,246,.22);
+    }
+
+    .vendor-name {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .vendor-name b {
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .vendor-pill {
+      flex: 0 0 auto;
+      border-radius: 6px;
+      background: #eef4ff;
+      color: #235fbf;
+      padding: 4px 7px;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .vendor-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-content: start;
+    }
+
+    .mini-chip {
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: rgba(47,125,246,.06);
+      border: 1px solid rgba(47,125,246,.1);
+      color: #526071;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: nowrap;
+    }
+
+    .vendor-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dimension-board {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .dimension-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px;
+      border: 1px solid var(--line);
+      background: #f4f7fa;
+      border-radius: 10px;
+    }
+
+    .dimension-tab {
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 11px;
+      background: transparent;
+      color: #526071;
+      white-space: nowrap;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 680;
+    }
+
+    .dimension-tab.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 8px 18px rgba(15,23,42,.08);
+    }
+
+    .vendor-profile {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--vendor-color);
+      border-radius: 12px;
+      background: #fff;
+      padding: 15px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .vendor-profile-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .vendor-profile-top h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .vendor-profile p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .special-analysis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .analysis-card {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      display: grid;
+      gap: 9px;
+      min-height: 150px;
+    }
+
+    .analysis-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .analysis-card b {
+      font-size: 15px;
+    }
+
+    .analysis-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .analysis-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .analysis-step {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: 9px;
+      padding: 10px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .analysis-step span {
+      color: #235fbf;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .analysis-step p {
+      color: #4b5563;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .scoring-note {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 12px;
+      align-items: start;
+      border: 1px solid rgba(47,125,246,.14);
+      background: rgba(47,125,246,.045);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .scoring-note b {
+      color: #235fbf;
+      font-size: 13px;
+    }
+
+    .scoring-note span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dimension-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .dimension-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .dimension-top b {
+      font-size: 15px;
+    }
+
+    .dimension-top span {
+      color: var(--muted);
+      font-size: 12px;
+      max-width: 360px;
+      text-align: right;
+    }
+
+    .score-lanes {
+      display: grid;
+      gap: 8px;
+    }
+
+    .score-lane {
+      display: grid;
+      grid-template-columns: 120px minmax(120px, 1fr) 68px;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .score-lane label {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .lane-bar {
+      height: 7px;
+      border-radius: 999px;
+      background: #e7edf4;
+      overflow: hidden;
+    }
+
+    .lane-bar i {
+      display: block;
+      height: 100%;
+      width: var(--score);
+      border-radius: inherit;
+      background: var(--vendor-color);
+    }
+
+    .level-badge {
+      justify-self: end;
+      min-width: 58px;
+      text-align: center;
+      border-radius: 6px;
+      padding: 3px 6px;
+      background: #f2f5f8;
+      color: #4b5563;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding-top: 2px;
+    }
+
+    .evidence-item {
+      border: 1px solid var(--line);
+      background: #fbfcfd;
+      border-radius: 8px;
+      padding: 8px 9px;
+      display: grid;
+      grid-template-columns: 96px 68px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .evidence-item b {
+      display: block;
+      font-size: 12px;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .evidence-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .battle-insight {
+      border-left: 1px solid var(--line);
+      background: #121820;
+      color: #fff;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .battle-insight h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .radar-box {
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(47,125,246,.14), rgba(255,255,255,.04));
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .radar-box b {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #35d0ee;
+    }
+
+    .radar-row {
+      display: grid;
+      grid-template-columns: 84px 1fr 48px;
+      gap: 8px;
+      align-items: center;
+      margin-top: 9px;
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+    }
+
+    .radar-row i {
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      overflow: hidden;
+    }
+
+    .radar-row i::before {
+      content: "";
+      display: block;
+      width: var(--w);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg,#2f7df6,#18bfd0);
+    }
+
+    .action-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .action-card {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.055);
+      border-radius: 10px;
+      padding: 12px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .action-card b {
+      font-size: 13px;
+    }
+
+    .action-card span {
+      color: rgba(255,255,255,.68);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .evidence-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 2px;
+    }
+
+    .evidence-tag {
+      border-radius: 999px;
+      background: #f3f6f9;
+      color: #5d6875;
+      padding: 3px 8px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .opportunity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .opportunity-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #f8fafc;
+      padding: 14px;
+      min-height: 142px;
+    }
+
+    .opportunity-card b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .opportunity-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1180px;
+      table-layout: fixed;
+    }
+
+    th:first-child,
+    td:first-child {
+      width: 190px;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      word-break: normal;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      color: var(--muted);
+      background: #f7f9fb;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    td strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    tr.active-vendor td {
+      background: rgba(47,125,246,.04);
+    }
+
+    .score {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: #eef4ff;
+      color: #235fbf;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .ops-cockpit {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr) 320px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      min-height: 610px;
+    }
+
+    .ops-left {
+      background: #f7fafc;
+      border-right: 1px solid var(--line);
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .ops-left h3,
+    .ops-right h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .ops-metric {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .ops-metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .ops-metric b {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .ops-metric i {
+      height: 7px;
+      border-radius: 999px;
+      background: #e7edf4;
+      overflow: hidden;
+    }
+
+    .ops-metric i::before {
+      content: "";
+      display: block;
+      height: 100%;
+      width: var(--w);
+      border-radius: inherit;
+      background: linear-gradient(90deg,#2f7df6,#15b9d1);
+    }
+
+    .ops-main {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      min-width: 0;
+    }
+
+    .ops-chain {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .ops-node {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg,#fff,#f8fafc);
+      border-radius: 11px;
+      padding: 12px;
+      min-height: 132px;
+      position: relative;
+      display: grid;
+      gap: 8px;
+    }
+
+    .ops-node::after {
+      content: "";
+      position: absolute;
+      top: 26px;
+      right: -11px;
+      width: 11px;
+      height: 2px;
+      background: #cbd5e1;
+    }
+
+    .ops-node:last-child::after { display: none; }
+
+    .ops-node em {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: rgba(47,125,246,.09);
+      color: #235fbf;
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .ops-node b {
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .ops-node span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .ops-dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 14px;
+    }
+
+    .ops-panel {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .ops-panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .ops-panel-title b {
+      font-size: 15px;
+    }
+
+    .ops-panel-title span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .ops-lane {
+      display: grid;
+      grid-template-columns: 92px 1fr 54px;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .ops-lane i {
+      height: 8px;
+      background: #e7edf4;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .ops-lane i::before {
+      content: "";
+      display: block;
+      width: var(--w);
+      height: 100%;
+      background: var(--c);
+      border-radius: inherit;
+    }
+
+    .ops-pill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .ops-pill {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: 9px;
+      padding: 10px;
+    }
+
+    .ops-pill b {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .ops-pill span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .ops-right {
+      background: #121820;
+      color: #fff;
+      border-left: 1px solid var(--line);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .ops-right .ops-panel {
+      background: rgba(255,255,255,.055);
+      border-color: rgba(255,255,255,.1);
+    }
+
+    .ops-right .ops-panel-title span,
+    .ops-right .ops-pill span,
+    .ops-right .ops-lane {
+      color: rgba(255,255,255,.67);
+    }
+
+    .ops-right .ops-pill {
+      background: rgba(255,255,255,.055);
+      border-color: rgba(255,255,255,.1);
+    }
+
+    .road {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: var(--shadow-soft);
+      min-height: 210px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .road::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 3px;
+      background: var(--c);
+    }
+
+    .road b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .road p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .road ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #3d4650;
+      font-size: 13px;
+    }
+
+    .phase-map {
+      margin-top: 14px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: auto;
+    }
+
+    .phase-head {
+      display: grid;
+      grid-template-columns: 150px repeat(4, 1fr);
+      background: #f7f9fb;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .phase-head div,
+    .phase-row > div {
+      padding: 13px 14px;
+      border-right: 1px solid var(--line);
+      min-height: 72px;
+    }
+
+    .phase-head div:last-child,
+    .phase-row > div:last-child {
+      border-right: 0;
+    }
+
+    .phase-head div {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 760;
+    }
+
+    .phase-row {
+      display: grid;
+      grid-template-columns: 150px repeat(4, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .phase-row:last-child { border-bottom: 0; }
+
+    .phase-label {
+      background: #fbfcfd;
+      color: var(--muted);
+      font-weight: 760;
+      font-size: 12px;
+    }
+
+    .phase-row b {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .phase-row span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 50;
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s ease;
+      background: #101317;
+      color: #fff;
+      border-radius: 8px;
+      padding: 11px 13px;
+      box-shadow: 0 16px 45px rgba(0,0,0,.24);
+      font-size: 13px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    body .topbar,
+    body .hero,
+    body .hero-panel,
+    body .metric,
+    body .hero-insight {
+      color: var(--ink);
+    }
+
+    body .topbar {
+      background: rgba(255,255,255,.92);
+      border-bottom-color: var(--line);
+    }
+
+    body .hero {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.98) 0%, rgba(246,248,251,.98) 58%, rgba(238,241,244,.98) 100%),
+        var(--page);
+    }
+
+    body .hero-panel,
+    body .metric,
+    body .hero-insight {
+      background: #fff;
+      border-color: var(--line);
+    }
+
+    body .metric span,
+    body .small-muted {
+      color: var(--muted);
+    }
+
+    .source-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .source-note a { color: #2f67c7; }
+
+    @media (max-width: 1160px) {
+      .hero-grid,
+      .exec-board,
+      .stage,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .stage {
+        min-height: 0;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .filter-stack {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .phase-head,
+      .phase-row {
+        grid-template-columns: 120px repeat(4, minmax(180px, 1fr));
+        min-width: 840px;
+      }
+
+      .insight {
+        border-left: 0;
+        border-top: 1px solid rgba(255,255,255,.08);
+      }
+
+      .scenario-grid {
+        max-height: none;
+      }
+
+      .roadmap {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .competitor-visual,
+      .ops-cockpit {
+        grid-template-columns: 1fr;
+      }
+
+      .battle-sidebar,
+      .ops-left {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .battle-insight,
+      .ops-right {
+        border-left: 0;
+      }
+
+      .ops-chain {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .battle-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .vendor-snapshot,
+      .dimension-board,
+      .opportunity-grid,
+      .strategy-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 24px, 1440px);
+      }
+
+      .topbar {
+        height: auto;
+        padding: 10px 0;
+      }
+
+      .topbar .shell {
+        display: grid;
+        gap: 10px;
+      }
+
+      .nav {
+        overflow: auto;
+      }
+
+      .hero {
+        padding-top: 28px;
+      }
+
+      .metric-grid,
+      .hero-insights,
+      .scenario-grid,
+      .filter-stack,
+      .roadmap,
+      .battle-summary,
+      .ops-chain,
+      .ops-dashboard-grid,
+      .ops-pill-grid,
+      .special-analysis,
+      .analysis-steps,
+      .vendor-snapshot,
+      .dimension-board,
+      .opportunity-grid,
+      .strategy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .evidence-item {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head,
+      .pane-toolbar,
+      .matrix-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .toolbar-left,
+      .search-box {
+        width: 100%;
+      }
+
+      .sort-stack,
+      .sort-segmented {
+        width: 100%;
+      }
+
+      .sort-segmented {
+        grid-template-columns: 1fr;
+      }
+
+      .sort-explainer {
+        grid-template-columns: 1fr;
+      }
+
+      .problem-item {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-rail,
+      .proof-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-rail::before {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <div class="brand">
+        <div class="brand-mark"><span></span></div>
+        <div>时代光华-AI陪练 体系化分析</div>
+      </div>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#summary" class="active">战略判断</a>
+        <a href="#map">机会地图</a>
+        <a href="#competitors">竞争格局</a>
+        <a href="#problems">产品诊断</a>
+        <a href="#business">增长闭环</a>
+        <a href="#roadmap">行动路线</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <div class="eyebrow">Roleplay AI Opportunity System</div>
+        <h1>AI陪练商业增长分析</h1>
+        <p>围绕市场打法、产品演进和竞品优劣势，判断未来应该往哪些业务方向打，当前体验和后台配置如何改，以及如何把 AI 陪练包装成可演示、可交付、可证明价值的商业方案。</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#map">开始点选场景</a>
+          <a class="btn dark" href="#competitors">进入竞争格局</a>
+          <a class="btn dark" href="#problems">查看产品诊断</a>
+        </div>
+        <div class="hero-insights" aria-label="时代光华优势与市场风向">
+          <div class="hero-insight"><b>时代光华底座</b><span>管理、销售、服务、行业课程体系可转成高质量陪练脚本和评分标准。</span></div>
+          <div class="hero-insight"><b>经典方法论</b><span>德鲁克目标管理、DDI领导力、绩效辅导、情境沟通可沉淀为模板包。</span></div>
+          <div class="hero-insight"><b>市场热点</b><span>AI素养、销售转化、客服质检、门店标准化、直播话术、合规风控。</span></div>
+          <div class="hero-insight"><b>商业打法</b><span>先卖角色场景包，再用文档生成承接行业定制和课程转化。</span></div>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <div class="hero-panel-head">
+          <div>
+            <div class="eyebrow">当前分析范围</div>
+          <div style="margin-top:6px;font-weight:760;">战略定位、机会优先级、竞争格局、产品诊断、增长打法</div>
+          </div>
+          <div class="small-muted">可交互 HTML</div>
+        </div>
+        <div class="metric-grid">
+          <div class="metric">
+            <span>候选角色场景</span>
+            <strong id="metricTotal">24</strong>
+            <span>可按角色筛选并点选</span>
+            <div class="mini-track"><i style="--w:86%"></i></div>
+          </div>
+          <div class="metric">
+            <span>建议优先切入</span>
+            <strong id="metricSelected">0</strong>
+            <span>由右侧选择自动汇总</span>
+            <div class="mini-track"><i id="heroSelectedBar" style="--w:0%"></i></div>
+          </div>
+          <div class="metric">
+            <span>核心问题域</span>
+            <strong>5</strong>
+            <span>体验 / 转化 / 角色投放 / 模板生成 / 内容时效</span>
+            <div class="mini-track"><i style="--w:82%"></i></div>
+          </div>
+          <div class="metric">
+            <span>竞品观察</span>
+            <strong>4</strong>
+            <span>北森、云学堂、知学云等</span>
+            <div class="mini-track"><i style="--w:64%"></i></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <main class="shell">
+    <section id="summary">
+      <div class="exec-board">
+        <div class="thesis-panel">
+          <div class="eyebrow">Executive Conclusion</div>
+          <h2>战略判断：AI陪练增长定位</h2>
+          <p>定位为企业岗位能力训练基础设施：先用角色机会地图筛出高优先级场景，再转成可演示、可评分、可交付的陪练样板。</p>
+          <div class="summary-rail" aria-label="战略路径">
+            <div class="rail-step">
+              <div class="step-icon">课</div>
+              <b>课程资产</b>
+              <span>方法论底座</span>
+            </div>
+            <div class="rail-step">
+              <div class="step-icon green">景</div>
+              <b>角色机会</b>
+              <span>岗位筛选</span>
+            </div>
+            <div class="rail-step">
+              <div class="step-icon orange">评</div>
+              <b>优先评分</b>
+              <span>优先级 / 成交 / 广度</span>
+            </div>
+            <div class="rail-step">
+              <div class="step-icon purple">交</div>
+              <b>样板交付</b>
+              <span>演示 / 订阅 / 定制</span>
+            </div>
+          </div>
+          <div class="priority-strip" id="roleCoverageChips" aria-label="机会地图角色入口"></div>
+        </div>
+        <div class="value-panel">
+          <div class="eyebrow">Value Proof</div>
+          <h3 style="margin:6px 0 0;font-size:18px;">价值证据</h3>
+          <div class="proof-grid" aria-label="价值证据图示">
+            <div class="proof-card">
+              <div><strong>企业</strong><b>能证明</b></div>
+              <span>业务对话达成度</span>
+              <div class="proof-mark">企</div>
+            </div>
+            <div class="proof-card">
+              <div><strong>学员</strong><b>会提升</b></div>
+              <span>短板 + 下一课</span>
+              <div class="proof-mark">学</div>
+            </div>
+            <div class="proof-card">
+              <div><strong>平台</strong><b>成资产</b></div>
+              <span>模板 + 数据</span>
+              <div class="proof-mark">资</div>
+            </div>
+            <div class="proof-card">
+              <div><strong>市场</strong><b>好切入</b></div>
+              <span>高优先级样板</span>
+              <div class="proof-mark">市</div>
+            </div>
+            <div class="proof-card">
+              <div><strong>课程</strong><b>可转化</b></div>
+              <span>评分规则 + 推荐</span>
+              <div class="proof-mark">课</div>
+            </div>
+            <div class="proof-card">
+              <div><strong>交付</strong><b>能放大</b></div>
+              <span>文档生成样板</span>
+              <div class="proof-mark">新</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="map">
+      <div class="section-head">
+        <div>
+          <h2>机会地图：角色场景优先级</h2>
+          <p>按企业岗位筛选高频陪练场景，用推荐优先级、成交价值和适用广度判断首批样板。</p>
+        </div>
+        <button class="btn" id="clearSelection">清空选择</button>
+      </div>
+
+      <div class="stage">
+        <aside class="sidebar">
+          <div class="side-label">角色筛选</div>
+          <div class="filter-stack" id="roleFilters"></div>
+
+        </aside>
+
+        <div class="content-pane">
+          <div class="pane-toolbar">
+            <div class="toolbar-left">
+              <div class="search-box">
+                <input id="searchInput" placeholder="搜索角色、场景、课程源或市场热点">
+              </div>
+              <div class="sort-stack">
+                <div class="segmented sort-segmented" aria-label="排序口径">
+                  <button class="active" data-sort="priority"><b>推荐优先级</b><span>商机 + 覆盖 + 成熟度</span></button>
+                  <button data-sort="pay"><b>成交价值</b><span>售前牵引与复购空间</span></button>
+                  <button data-sort="coverage"><b>适用广度</b><span>岗位/行业/课程迁移度</span></button>
+                </div>
+                <div class="sort-explainer" id="sortExplainer"></div>
+              </div>
+            </div>
+            <div style="color:var(--muted);font-size:13px;"><span id="visibleCount">0</span> 个场景正在显示</div>
+          </div>
+          <div class="subcat-strip" id="subcatStrip" aria-label="小类筛选"></div>
+          <div class="scenario-grid" id="scenarioGrid"></div>
+        </div>
+
+        <aside class="insight">
+          <div class="selection-box">
+            <div class="eyebrow">Participation Decision</div>
+            <div class="big-number"><strong id="selectedCount">0</strong><span>个已点选</span></div>
+            <div class="mini-track"><i id="selectedBar" style="--w:0%"></i></div>
+            <div class="selected-list" id="selectedList"></div>
+          </div>
+
+          <div class="selection-box">
+            <h3>样板组合建议</h3>
+            <div class="recommendation" id="recommendationBox"></div>
+          </div>
+
+          <div class="selection-box">
+            <h3>打包与线索口径</h3>
+            <div class="rec-row"><b>定位</b><span>不是泛聊天，而是企业岗位能力的情景化刻意练习。</span></div>
+            <div class="rec-row"><b>包装</b><span>先按机会地图入口打包：管理者、销售、客服/售后、新员工、HR/培训、财务。</span></div>
+            <div class="rec-row"><b>线索</b><span>用推荐优先级选演示样板，再用成交价值和适用广度判断推进顺序。</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="competitors">
+      <div class="section-head">
+        <div>
+          <h2>竞争格局：市场对标与差异机会</h2>
+          <p>从用户角色、场景深度、产品能力、数据闭环和差异化机会，判断时代光华的进入窗口与补强方向。</p>
+        </div>
+      </div>
+
+      <div class="matrix-wrap">
+        <div class="matrix-toolbar">
+          <h3>竞品对标矩阵</h3>
+          <div class="segmented" aria-label="竞品视角">
+            <button class="active" data-vendor-view="all">全部</button>
+            <button data-vendor-view="role">角色场景</button>
+            <button data-vendor-view="product">产品能力</button>
+            <button data-vendor-view="gap">差异机会</button>
+          </div>
+        </div>
+        <div class="competitor-visual" id="competitorVisual"></div>
+      </div>
+      <div class="source-note">
+        资料口径：参考
+        <a href="https://www.beisen.com/product/ai/pl" target="_blank" rel="noreferrer">北森 AI陪练公开页</a>、
+        <a href="https://www.beisen.com/res/2176.html" target="_blank" rel="noreferrer">北森 AI陪练选型文章</a>、
+        <a href="https://www.zkj.com/train4" target="_blank" rel="noreferrer">得助智能陪练公开页</a>、
+        <a href="https://finance.sina.cn/2020-10-09/detail-iivhvpwz1137086.d.html" target="_blank" rel="noreferrer">云学堂 AI培训公开报道</a>、
+        <a href="https://www.zhixueyun.com/jnxl/" target="_blank" rel="noreferrer">知学云 AI+技能训练公开页</a>、
+        <a href="https://www.zhixueyun.com/about/news/2024/0618/167.html" target="_blank" rel="noreferrer">知学云 AI陪练公开资料</a>、
+        <a href="https://www.ddi.com/blog/leadership-trends-2026" target="_blank" rel="noreferrer">DDI 2026 领导力趋势</a>，仅用于产品分析，不代表完整商务尽调。
+      </div>
+    </section>
+
+    <section id="problems">
+      <div class="section-head">
+        <div>
+          <h2>产品诊断：体验短板与改进路线</h2>
+          <p>把当前体验、说明、角色投放和后台配置问题拆成可落地的产品改进动作。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="module-card">
+          <div class="module-card-head">
+            <h3>体验问题地图</h3>
+            <span class="tag hot">点击分类切换</span>
+          </div>
+          <div class="module-body">
+            <div class="problem-tabs" id="problemTabs"></div>
+            <div class="problem-list" id="problemList"></div>
+          </div>
+        </div>
+
+        <div class="module-card dark">
+          <div class="module-card-head">
+            <h3>产品改进路线</h3>
+            <span class="tag hot">降低后台配置门槛</span>
+          </div>
+          <div class="module-body">
+            <div class="workflow">
+              <div class="flow-step"><i>1</i><div><b>P0 用户端补强</b><span>补对话进度、阶段提示、提前退出确认、保存续练和练后下一步。</span></div></div>
+              <div class="flow-step"><i>2</i><div><b>P0 课程简介标准化</b><span>每个陪练补齐角色、场景、目标、权威来源、适用边界和推荐人群。</span></div></div>
+              <div class="flow-step"><i>3</i><div><b>P0 文档生成后台</b><span>上传 PPT、制度、话术、案例后自动生成名称、背景、目标用户和话术环节。</span></div></div>
+              <div class="flow-step"><i>4</i><div><b>P1 评分与通过规则</b><span>自动生成文本可评价的评分维度、权重、1/3/5分锚点、通过规则。</span></div></div>
+              <div class="flow-step"><i>5</i><div><b>P1 付费转化闭环</b><span>练后能力图连接课程卡片、视频课、二次练习和企业定制服务。</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="business">
+      <div class="section-head">
+        <div>
+          <h2>增长闭环：市场打法与转化证据</h2>
+          <p>给市场人员一套可对客讲、可试点、可跟进、可复盘的推广打法。</p>
+        </div>
+      </div>
+      <div class="ops-cockpit">
+        <aside class="ops-left">
+          <h3>增长推进看板</h3>
+          <div class="ops-metric"><span>主推客群</span><b>3类</b><i style="--w:88%"></i></div>
+          <div class="ops-metric"><span>对客样板</span><b>8个</b><i style="--w:76%"></i></div>
+          <div class="ops-metric"><span>跟进周期</span><b>14天</b><i style="--w:68%"></i></div>
+          <div class="basis-box">
+            <b>使用口径</b>
+            市场先讲客户痛点和样板效果，不讲复杂平台能力。每次触达都要带一个角色场景包和一个可演示模板。
+          </div>
+        </aside>
+        <div class="ops-main">
+          <div class="ops-chain">
+            <div class="ops-node"><em>01</em><b>锁定人群</b><span>优先找培训负责人、销售负责人、客服负责人和业务中层。</span></div>
+            <div class="ops-node"><em>02</em><b>痛点开场</b><span>从“课后不会用、话术难复制、新人上手慢”切入。</span></div>
+            <div class="ops-node"><em>03</em><b>样板演示</b><span>现场展示一个真实角色、对话过程、评分反馈和练后推荐。</span></div>
+            <div class="ops-node"><em>04</em><b>试点推进</b><span>让客户选 3 个岗位场景，2 周内形成可验收样板。</span></div>
+            <div class="ops-node"><em>05</em><b>复盘转化</b><span>用完成率、通过率、复练率和课程点击推动增购。</span></div>
+          </div>
+          <div class="ops-dashboard-grid">
+            <div class="ops-panel">
+              <div class="ops-panel-title"><b>对客转化动作</b><span>市场可直接执行</span></div>
+              <div class="ops-lane"><span>老客唤醒</span><i style="--w:92%;--c:#2f7df6"></i><b>P0</b></div>
+              <div class="ops-lane"><span>销售线索</span><i style="--w:88%;--c:#15b9d1"></i><b>P0</b></div>
+              <div class="ops-lane"><span>培训项目</span><i style="--w:82%;--c:#31a66a"></i><b>P0</b></div>
+              <div class="ops-lane"><span>内容传播</span><i style="--w:74%;--c:#d98b28"></i><b>P1</b></div>
+              <div class="ops-lane"><span>行业方案</span><i style="--w:62%;--c:#7d62e6"></i><b>P2</b></div>
+            </div>
+            <div class="ops-panel">
+              <div class="ops-panel-title"><b>主推场景包</b><span>一页纸讲清楚</span></div>
+              <div class="ops-pill-grid">
+                <div class="ops-pill"><b>管理者会说</b><span>绩效、辅导、授权、协同</span></div>
+                <div class="ops-pill"><b>销售会成交</b><span>开场、异议、大客、续费</span></div>
+                <div class="ops-pill"><b>客服会处理</b><span>投诉、质检、挽留、支持</span></div>
+                <div class="ops-pill"><b>新人会上岗</b><span>SOP、产品、文化、认证</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="ops-panel">
+            <div class="ops-panel-title"><b>市场素材矩阵</b><span>减少销售解释成本</span></div>
+            <div class="ops-pill-grid">
+              <div class="ops-pill"><b>对客一句话</b><span>把培训从“学过课程”变成“练会真实对话”。</span></div>
+              <div class="ops-pill"><b>演示脚本</b><span>3分钟展示角色、任务、AI追问、评分和推荐课程。</span></div>
+              <div class="ops-pill"><b>案例切片</b><span>管理、销售、客服、新人各准备一个可截图样板。</span></div>
+              <div class="ops-pill"><b>热点专题</b><span>每月发布AI、销售、服务、管理热门场景清单。</span></div>
+            </div>
+          </div>
+        </div>
+        <aside class="ops-right">
+          <h3>转化打法</h3>
+          <div class="ops-panel">
+            <div class="ops-panel-title"><b>首轮推广</b><span>先打容易成交的入口</span></div>
+            <div class="ops-pill"><b>老客户</b><span>从已购课程的课后练习切入，强调转化和复训。</span></div>
+            <div class="ops-pill"><b>新线索</b><span>从岗位痛点切入，不先讲平台，先让客户看到样板。</span></div>
+          </div>
+          <div class="ops-panel">
+            <div class="ops-panel-title"><b>成交证据</b><span>跟进时必须回收</span></div>
+            <div class="ops-lane"><span>试点人数</span><i style="--w:80%;--c:#31a66a"></i><b>必问</b></div>
+            <div class="ops-lane"><span>完成率</span><i style="--w:78%;--c:#31a66a"></i><b>必看</b></div>
+            <div class="ops-lane"><span>复购场景</span><i style="--w:70%;--c:#d98b28"></i><b>必推</b></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <div class="section-head">
+        <div>
+          <h2>行动路线：能力建设与落地节奏</h2>
+          <p>按产品、技术、课程、市场、运营、数据六个端口协同推进，先追赶竞品关键能力，再形成差异化超越。</p>
+        </div>
+      </div>
+      <div class="roadmap">
+        <div class="road" style="--c:linear-gradient(90deg,#2f7df6,#15b9d1)">
+          <b>1. 产品端</b>
+          <p>把 AI 陪练从功能入口改成岗位场景入口，补齐用户端练习体验。</p>
+          <ul>
+            <li>岗位场景库</li>
+            <li>练习进度</li>
+            <li>练后推荐</li>
+          </ul>
+        </div>
+        <div class="road" style="--c:#31a66a">
+          <b>2. 技术端</b>
+          <p>追赶竞品的自动生成、评分解释和数据看板能力。</p>
+          <ul>
+            <li>文档生成</li>
+            <li>评分规则</li>
+            <li>能力画像</li>
+          </ul>
+        </div>
+        <div class="road" style="--c:#d98b28">
+          <b>3. 市场端</b>
+          <p>用样板包、对客话术和试点打法，让客户先看到价值。</p>
+          <ul>
+            <li>8个样板</li>
+            <li>推广话术</li>
+            <li>客户试点</li>
+          </ul>
+        </div>
+        <div class="road" style="--c:#7d62e6">
+          <b>4. 运营端</b>
+          <p>建立模板上新、专家审核、交付复盘和续费增购机制。</p>
+          <ul>
+            <li>月度上新</li>
+            <li>专家审核</li>
+            <li>复购跟进</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-map" aria-label="产品演进路线实施图">
+        <div class="phase-head">
+          <div>执行端口</div>
+          <div>追赶基础能力<br>0-2 周</div>
+          <div>形成对客样板<br>3-6 周</div>
+          <div>规模化交付<br>7-10 周</div>
+          <div>差异化超越<br>11-16 周</div>
+        </div>
+        <div class="phase-row">
+          <div class="phase-label">产品端</div>
+          <div><b>改入口</b><span>从课程/空白配置改成岗位角色入口：管理者、销售、客服、财务等。</span></div>
+          <div><b>补体验</b><span>对话进度、退出续练、练后反馈、课程推荐形成闭环。</span></div>
+          <div><b>沉模板</b><span>每个角色 20+ 场景，支持二级业务场景筛选。</span></div>
+          <div><b>做产品资产</b><span>形成可复用角色包、场景包、客户资料生成包。</span></div>
+        </div>
+        <div class="phase-row">
+          <div class="phase-label">技术端</div>
+          <div><b>补生成链路</b><span>上传文档生成名称、背景、目标用户、话术环节。</span></div>
+          <div><b>补评分解释</b><span>生成评分维度、权重、1/3/5分锚点和通过规则。</span></div>
+          <div><b>补数据看板</b><span>角色覆盖、完成率、通过率、复练率、课程点击可追踪。</span></div>
+          <div><b>补智能推荐</b><span>根据能力短板推荐课程、二次练习和定制项目。</span></div>
+        </div>
+        <div class="phase-row">
+          <div class="phase-label">课程端</div>
+          <div><b>梳理底座</b><span>德鲁克、DDI、经理人课程转为评分依据和行为标准。</span></div>
+          <div><b>补热点</b><span>AI、销售、服务、财税、合规等月度热点转为陪练任务。</span></div>
+          <div><b>专家审核</b><span>专家把热点内容改写成可练、可评、可复盘模板。</span></div>
+          <div><b>形成壁垒</b><span>用课程权威性和专家审核机制区别于纯AI生成竞品。</span></div>
+        </div>
+        <div class="phase-row">
+          <div class="phase-label">市场端</div>
+          <div><b>做8个样板</b><span>管理者、销售、客服、新人、财务、采购各做可演示样板。</span></div>
+          <div><b>做推广包</b><span>一页纸、3分钟演示脚本、客户痛点话术、竞品对比话术。</span></div>
+          <div><b>做试点打法</b><span>让客户选3个岗位场景，2周内验收样板和效果数据。</span></div>
+          <div><b>做渠道投放</b><span>按角色痛点投放专题，不泛泛宣传“AI陪练”。</span></div>
+        </div>
+        <div class="phase-row">
+          <div class="phase-label">运营/交付端</div>
+          <div><b>定SOP</b><span>客户资料收集、模板生成、专家审核、上线验收。</span></div>
+          <div><b>跑复盘</b><span>每个试点回收完成率、通过率、能力短板和客户反馈。</span></div>
+          <div><b>做客户成功</b><span>低完成率客户做运营提醒，高价值场景推动复购。</span></div>
+          <div><b>沉交付资产</b><span>形成报价口径、交付周期、客户案例和续费路径。</span></div>
+        </div>
+        <div class="phase-row">
+          <div class="phase-label">数据/管理端</div>
+          <div><b>建指标</b><span>角色覆盖、模板使用、完成率、通过率、退出率。</span></div>
+          <div><b>建证据</b><span>能力短板、练后课程点击、复练率、试点满意度。</span></div>
+          <div><b>建决策</b><span>按数据决定下一批优先角色和市场投放主题。</span></div>
+          <div><b>建超越点</b><span>用课程资产+真实练习数据形成竞品难复制的能力模型。</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">已更新选择</div>
+
+  <script>
+    const scenarios = [
+      { role: '中层管理', title: '绩效面谈：帮助低绩效员工提升', scene: '月度复盘后一对一辅导，员工有抵触但仍有改进空间。', target: '提升反馈、倾听、根因分析和行动承诺能力。', coverage: 74, pay: 86, priority: 95, maturity: 'high' },
+      { role: '中层管理', title: '向上管理：澄清上级模糊指令', scene: '上级只说“尽快跑起来”，目标、资源、边界不清。', target: '训练目标澄清、复述确认、风险暴露和方案选项。', coverage: 68, pay: 82, priority: 92, maturity: 'high' },
+      { role: '中层管理', title: '横向协同：界定跨部门责任归属', scene: '销售、交付、产品互相推责，项目延期。', target: '训练共同目标、事实链、责任边界和推进机制。', coverage: 70, pay: 80, priority: 90, maturity: 'high' },
+      { role: '中层管理', title: '目标管理：年度指标拆成行动计划', scene: '年度指标增长明显，下属认为资源不足。', target: '训练目标拆解、优先级、资源盘点、里程碑和复盘节奏。', coverage: 64, pay: 78, priority: 87, maturity: 'high' },
+      { role: '培训/HR', title: '新员工培训：入职 30 天快速上岗', scene: '新人频繁出错，不敢提问，主管带教压力大。', target: '把制度、流程、文化和岗位动作转化为可练习任务。', coverage: 78, pay: 76, priority: 86, maturity: 'high' },
+      { role: '培训/HR', title: '管理者训练营：课后情景演练', scene: '线下课程讲完后，学员缺少真实对话练习。', target: '把领导力课程转成可评估的情景化练习。', coverage: 60, pay: 83, priority: 89, maturity: 'high' },
+      { role: '培训/HR', title: '企业文化内化：价值观冲突处理', scene: '员工知道价值观口号，但遇到业务冲突不会应用。', target: '训练价值判断、边界表达和行为选择。', coverage: 48, pay: 62, priority: 68, maturity: 'medium' },
+      { role: '培训/HR', title: '合规宣导：敏感行为识别与劝阻', scene: '员工面对客户宴请、隐私数据、合同条款边界不清。', target: '训练合规意识、风险表达和升级机制。', coverage: 56, pay: 74, priority: 81, maturity: 'medium' },
+      { role: '销售', title: '电销销售：开场破冰与需求挖掘', scene: '客户时间少、戒备强，销售容易照本宣科。', target: '提升开场、提问、异议承接和下一步邀约。', coverage: 82, pay: 88, priority: 96, maturity: 'high' },
+      { role: '销售', title: '大客户拜访：商务谈判与方案推进', scene: '客户关注价格、风险和内部决策链。', target: '训练价值表达、决策人识别、让步边界和推进节奏。', coverage: 72, pay: 90, priority: 94, maturity: 'high' },
+      { role: '销售', title: '销售异议处理：预算不足与竞品对比', scene: '客户说预算有限，或认为竞品更成熟。', target: '训练异议分类、证据表达和价值重构。', coverage: 76, pay: 84, priority: 91, maturity: 'high' },
+      { role: '销售', title: '续费增长：老客户复购与流失挽回', scene: '客户使用不充分，续费意愿下降。', target: '训练使用复盘、价值证明和续费方案设计。', coverage: 54, pay: 80, priority: 82, maturity: 'medium' },
+      { role: '客服/售后', title: '投诉处理：情绪安抚与解决方案', scene: '客户不满升级，要求退款或投诉到主管。', target: '训练情绪承接、事实澄清、方案边界和闭环确认。', coverage: 80, pay: 82, priority: 90, maturity: 'high' },
+      { role: '客服/售后', title: '客服质检：不合格对话复盘改进', scene: '客服话术合规但体验生硬，评分低。', target: '连接质检标准、示范话术和二次练习。', coverage: 70, pay: 75, priority: 83, maturity: 'medium' },
+      { role: '客服/售后', title: '技术支持：复杂问题定位与升级', scene: '客户描述模糊，支持人员容易直接甩给研发。', target: '训练追问、排查路径、风险告知和升级说明。', coverage: 50, pay: 66, priority: 70, maturity: 'medium' },
+      { role: '门店/零售', title: '门店导购：迎宾接待与需求推荐', scene: '顾客进店不愿交流，导购难以判断需求。', target: '训练观察提问、产品推荐、试用引导和成交收口。', coverage: 76, pay: 82, priority: 88, maturity: 'high' },
+      { role: '门店/零售', title: '店长管理：班组晨会与目标拆解', scene: '门店目标压力大，员工只关注个人任务。', target: '训练目标传达、任务分配、士气激励和现场检查。', coverage: 64, pay: 78, priority: 84, maturity: 'medium' },
+      { role: '门店/零售', title: '连锁巡店：问题反馈与纠偏沟通', scene: '督导发现陈列、卫生、服务问题，店长有抵触。', target: '训练事实反馈、标准解释和整改承诺。', coverage: 58, pay: 72, priority: 77, maturity: 'medium' },
+      { role: '营销/内容', title: '主播话术：直播间互动与转化', scene: '主播能讲产品，但不会承接弹幕异议和转化节点。', target: '训练开场、卖点节奏、异议回应和限时促单。', coverage: 62, pay: 84, priority: 85, maturity: 'medium' },
+      { role: '营销/内容', title: '短视频编导：脚本评审与优化', scene: '内容团队脚本多但转化弱，缺少评审话术。', target: '训练目标用户、钩子、卖点证据和行动号召。', coverage: 40, pay: 62, priority: 61, maturity: 'low' },
+      { role: '职能/运营', title: '企业采购：供应商压价与风险谈判', scene: '供应商涨价，采购需要争取价格和交付保障。', target: '训练谈判筹码、风险条款和替代方案。', coverage: 44, pay: 70, priority: 72, maturity: 'medium' },
+      { role: '职能/运营', title: '财务规范：报销争议与制度解释', scene: '员工认为制度死板，财务需要解释边界并给替代路径。', target: '训练制度解释、同理沟通和合规底线。', coverage: 46, pay: 58, priority: 60, maturity: 'low' },
+      { role: '职能/运营', title: 'HRBP 访谈：识别团队真实问题', scene: '业务主管只说人不行，真实问题可能是目标、流程或激励。', target: '训练访谈提问、复述确认和问题归因。', coverage: 52, pay: 72, priority: 76, maturity: 'medium' },
+      { role: '职能/运营', title: '仓储物流：异常处理与跨班组交接', scene: '库存异常、发货延误，班组间互相推责。', target: '训练异常上报、责任界定和补救闭环。', coverage: 54, pay: 68, priority: 74, maturity: 'medium', source: '运营管理', trend: '供应链韧性' },
+      { role: '领导力经典', title: '德鲁克目标管理：从任务分派到成果承诺', scene: '团队忙于执行动作，但没有围绕贡献、成果和优先级达成共识。', target: '训练目标澄清、贡献定义、结果承诺和复盘机制。', coverage: 74, pay: 86, priority: 93, maturity: 'high', source: '德鲁克/MBO', trend: '管理基本功回归' },
+      { role: '领导力经典', title: 'DDI基础领导力：首次带人建立信任', scene: '业务骨干刚成为主管，原同事不适应其管理身份。', target: '训练身份定调、建立信任、角色边界和团队承诺。', coverage: 70, pay: 84, priority: 91, maturity: 'high', source: 'DDI领导力', trend: '新经理转身' },
+      { role: '领导力经典', title: '情境领导：不同成熟度员工的辅导方式', scene: '同一套管理方式对新人、骨干和低意愿员工效果不同。', target: '训练诊断员工状态、匹配指令/辅导/授权/支持方式。', coverage: 66, pay: 80, priority: 87, maturity: 'high', source: '领导力课程', trend: '个性化管理' },
+      { role: '领导力经典', title: '高潜培养：关键任务授权与复盘', scene: '高潜骨干需要承担跨部门项目，但担心权责不清和背锅。', target: '训练授权边界、资源支持、检查点和成长复盘。', coverage: 60, pay: 82, priority: 85, maturity: 'medium', source: '人才梯队', trend: '高潜加速' },
+      { role: 'AI转型/数智化', title: 'AI素养：业务主管识别可落地场景', scene: '部门想用 AI 提效，但提不清业务痛点、数据条件和风险边界。', target: '训练场景识别、价值估算、数据准备和试点设计。', coverage: 72, pay: 88, priority: 94, maturity: 'high', source: '数智化课程', trend: 'AI素养必修' },
+      { role: 'AI转型/数智化', title: '人机协同：用AI改造客服质检流程', scene: '客服团队想用 AI 提升质检效率，但担心误判和员工抵触。', target: '训练流程拆解、风险解释、试点沟通和指标设定。', coverage: 64, pay: 82, priority: 86, maturity: 'medium', source: 'AI应用课', trend: 'AI Agent落地' },
+      { role: 'AI转型/数智化', title: '数据汇报：从看板异常到业务建议', scene: '经理看到数据异常，但无法说清原因假设和行动建议。', target: '训练指标解释、假设验证、业务判断和汇报结构。', coverage: 68, pay: 78, priority: 84, maturity: 'medium', source: '数据分析课', trend: '数据驱动经营' },
+      { role: 'AI转型/数智化', title: '知识萃取：把优秀员工经验变成陪练模板', scene: '组织有销冠、金牌客服和优秀店长经验，但难以规模复制。', target: '训练访谈萃取、关键话术、评分标准和模板化表达。', coverage: 58, pay: 86, priority: 88, maturity: 'medium', source: '知识管理', trend: '经验资产化' },
+      { role: '行业业务线', title: '客户经理：合规边界内的价值沟通', scene: '客户关注效果和承诺边界，业务人员需要既讲清价值又避免过度承诺。', target: '训练合规表达、需求澄清、证据引用和拜访收口。', coverage: 62, pay: 88, priority: 89, maturity: 'high', source: '行业课程', trend: '合规价值表达' },
+      { role: '行业业务线', title: '顾问销售：风险揭示与适配沟通', scene: '客户只关注收益或结果，顾问需要解释风险、期限、条件和适用边界。', target: '训练风险揭示、需求匹配、证据留痕和合规确认。', coverage: 58, pay: 84, priority: 86, maturity: 'medium', source: '顾问式销售', trend: '强监管服务' },
+      { role: '行业业务线', title: '一线主管：质量异常与员工纠偏', scene: '一线员工认为异常只是偶发，不愿按标准上报或纠正。', target: '训练事实核查、风险升级、标准解释和现场纠偏。', coverage: 66, pay: 76, priority: 82, maturity: 'medium', source: '一线管理', trend: '精益运营' },
+      { role: '行业业务线', title: '项目经理：客户延期投诉与资源协调', scene: '项目延期导致客户不满，内部资源又难以协调。', target: '训练客户安抚、事实同步、资源争取和计划重排。', coverage: 60, pay: 78, priority: 81, maturity: 'medium', source: '项目管理', trend: '交付确定性' },
+      { role: '组织人才/HR', title: '绩效校准会：处理部门间评分分歧', scene: '各部门经理都想保护本部门员工，绩效分布难以校准。', target: '训练标准对齐、证据讨论、分歧处理和决策记录。', coverage: 52, pay: 78, priority: 80, maturity: 'medium', source: '绩效管理', trend: '组织公平' },
+      { role: '组织人才/HR', title: '人才盘点：识别高潜与关键岗位风险', scene: '业务负责人凭印象评价人才，缺少证据和发展动作。', target: '训练潜力证据、岗位风险、继任计划和发展建议。', coverage: 50, pay: 80, priority: 79, maturity: 'medium', source: '人才盘点', trend: '组织能力建设' },
+      { role: '组织人才/HR', title: '离职挽留：关键员工去意已决', scene: '核心员工提出离职，直属经理和 HRBP 需要判断挽留空间。', target: '训练动因澄清、价值回应、方案边界和交接安排。', coverage: 56, pay: 74, priority: 78, maturity: 'medium', source: '员工关系', trend: '人才保留' },
+      { role: '合规/风险', title: '数据安全：客户信息使用边界沟通', scene: '业务团队想导出客户数据做营销，合规部门需要解释边界。', target: '训练风险识别、制度解释、替代方案和审批路径。', coverage: 58, pay: 82, priority: 84, maturity: 'medium', source: '合规课程', trend: '数据安全' },
+      { role: '合规/风险', title: '反舞弊：供应商异常报价内部提醒', scene: '采购发现报价异常，但担心影响业务进度和同事关系。', target: '训练事实收集、风险提示、升级机制和保护性表达。', coverage: 42, pay: 72, priority: 73, maturity: 'low', source: '风控课程', trend: '廉洁合规' },
+      { role: '合规/风险', title: '舆情应对：门店突发投诉公开传播', scene: '客户投诉在社交平台发酵，门店和总部需要统一回应。', target: '训练事实核验、公众回应、内部协同和补救承诺。', coverage: 48, pay: 78, priority: 77, maturity: 'medium', source: '危机沟通', trend: '社媒舆情' },
+      { role: '高管/战略', title: '战略解码：从年度战略到部门战役', scene: '战略目标清晰，但各部门不知道如何转成可执行战役。', target: '训练战略翻译、关键战役、资源取舍和指标承接。', coverage: 54, pay: 86, priority: 83, maturity: 'medium', source: '战略管理', trend: '战略落地' },
+      { role: '高管/战略', title: '变革沟通：组织调整后的中层安抚', scene: '组织结构调整后，中层担忧权责变化和团队稳定。', target: '训练变革叙事、利益回应、关键人沟通和行动节奏。', coverage: 50, pay: 84, priority: 82, maturity: 'medium', source: '变革管理', trend: '组织韧性' }
+    ];
+
+    const categoryMap = {
+      '中层管理': '管理者',
+      '领导力经典': '管理者',
+      '高管/战略': '管理者',
+      '销售': '销售',
+      '客服/售后': '客服/售后',
+      '培训/HR': '新员工',
+      '门店/零售': '门店/导购',
+      '营销/内容': '主播/内容',
+      'AI转型/数智化': 'AI数字化',
+      '组织人才/HR': 'HR/培训',
+      '职能/运营': '采购',
+      '行业业务线': '行业扩展',
+      '合规/风险': '法务/合规'
+    };
+
+    function roleCategory(item) {
+      const text = `${item.role} ${item.title} ${item.source || ''}`;
+      if (item.role === '职能/运营') {
+        if (/财务|报销|预算|回款|账款|票据|发票|成本|税务/.test(text)) return '财务';
+        if (/HRBP|访谈|培训|人才|绩效/.test(text)) return 'HR/培训';
+        if (/仓储|物流|库存|交接|供应链/.test(text)) return '供应链/物流';
+        return '采购';
+      }
+      if (item.role === '行业业务线') {
+        if (/项目|交付|延期|资源协调/.test(text)) return '项目交付';
+        if (/制造|质量|生产|班组|一线/.test(text)) return '生产/质量';
+        return '行业扩展';
+      }
+      return categoryMap[item.role] || item.role;
+    }
+
+    scenarios.forEach(item => {
+      item.role = roleCategory(item);
+      item.source = item.source || '时代光华课程';
+      item.trend = item.trend || '高频刚需';
+    });
+
+    function addCurated(role, source, trend, titles, basePriority, basePay) {
+      titles.forEach((title, index) => {
+        const priority = Math.max(76, basePriority - Math.floor(index / 3));
+        const pay = Math.max(70, basePay - Math.floor(index / 4));
+        scenarios.push({
+          role,
+          title,
+          scene: '企业高频真实工作对话，适合做成标准陪练模板并用于售前演示、项目交付和课后转化。',
+          target: '训练可观察的沟通行为、业务判断、行动承诺和复盘闭环，支持评分与课程推荐。',
+          coverage: Math.max(58, 86 - index),
+          pay,
+          priority,
+          maturity: index < 12 ? 'high' : 'medium',
+          source,
+          trend
+        });
+      });
+    }
+
+    addCurated('管理者', '德鲁克/DDI/经理人核心课程', '管理基本功回归', [
+      '绩效辅导｜一线员工连续未达标',
+      '新员工带教｜快速达到上岗要求',
+      '异常处理｜关键节点发现风险',
+      '差异化管理｜骨干与新人分工冲突',
+      '目标管理｜将年度指标拆成行动计划',
+      '绩效面谈｜帮助低绩效员工提升',
+      '授权委责｜让骨干承担关键项目',
+      '横向协同｜界定跨部门责任归属',
+      '向上管理｜准确领会上级意图',
+      '冲突处理｜两名骨干公开争执',
+      '激励员工｜打破团队平淡状态',
+      '角色转身｜从骨干到带人',
+      '建立成功团队｜识别和评估团队人才',
+      '领导团队｜新团队快速建立信任',
+      '组织文化｜推动文化落地为行为',
+      '过程控制｜建立纠偏与过程控制机制',
+      '问题解决｜识别问题的根本原因',
+      '培养发展｜搭建跨层级培养体系',
+      '向上汇报｜争取上级资源和支持',
+      '横向协同｜推动跨部门协同攻坚',
+      '下属管理｜管理00后新生代员工',
+      '绩效评价｜客观公正地评定员工绩效',
+      '风险管控｜平衡业务开拓与合规底线',
+      '业务数据｜从海量数据提取有效信息'
+    ], 96, 88);
+
+    addCurated('销售', '销售管理/顾问式销售/大客户课程', '增长承压', [
+      '电销开场｜30秒破冰与继续沟通',
+      '需求挖掘｜从产品介绍转向客户问题',
+      '异议处理｜预算不足与竞品对比',
+      '大客户拜访｜商务谈判与方案推进',
+      '关键人识别｜多角色决策链推进',
+      '方案呈现｜把产品能力转成客户收益',
+      '价格谈判｜守住价值与让步边界',
+      '续费增长｜老客户复购与流失挽回',
+      '线索跟进｜沉默客户重新激活',
+      '销售复盘｜丢单原因分析与改进',
+      '渠道招商｜代理商利益与政策沟通',
+      '销售管理｜辅导新人首单成交',
+      '销售晨会｜目标拆解与士气激励',
+      '客户成功｜低活跃客户价值唤醒',
+      '解决方案销售｜从功能清单到业务方案',
+      '招投标沟通｜客户评分点澄清',
+      '行业客户｜降本增效方案沟通',
+      '合规客户｜价值表达与证据引用',
+      '销售协同｜售前交付边界确认',
+      '回款沟通｜逾期账款催收与关系维护',
+      '转介绍｜满意客户的推荐邀约',
+      '高层拜访｜战略价值与投入产出表达'
+    ], 95, 90);
+
+    addCurated('客服/售后', '客服质检/服务管理/投诉处理课程', '体验与留存', [
+      '投诉处理｜情绪安抚与解决方案',
+      '升级投诉｜主管介入与期望管理',
+      '质检复盘｜不合格对话二次改进',
+      '技术支持｜复杂问题定位与升级',
+      '服务挽留｜高价值客户流失预警',
+      '服务补偿｜边界解释与替代方案',
+      '客服新人｜标准话术与同理表达',
+      '多轮追问｜从模糊描述到问题定位',
+      '工单协同｜跨部门责任和时限确认',
+      '服务销售｜从问题解决到增购推荐',
+      '负面评价｜公开差评回应与修复',
+      '热线质检｜语气生硬的柔性表达',
+      '客户教育｜复杂功能的低门槛解释',
+      'VIP服务｜高要求客户的优先级沟通',
+      '危机安抚｜系统故障期间客户沟通',
+      '退款争议｜规则解释与体验补救',
+      '服务复盘｜高频问题归因和改进建议',
+      '知识库应用｜从标准答案到个性化回应',
+      '客服班组长｜低分员工辅导面谈',
+      '外包客服｜标准一致性训练',
+      '服务交接｜班次交接中的风险说明'
+    ], 92, 84);
+
+    addCurated('新员工', '新员工培养/岗位SOP/课程体系', '快速上岗', [
+      '入职破冰｜理解组织文化与行为边界',
+      '岗位SOP｜关键流程复述与演练',
+      '导师带教｜新人不敢提问的沟通',
+      '试用期反馈｜30天表现复盘',
+      '安全合规｜红线行为识别与承诺',
+      '产品知识｜从背知识到客户解释',
+      '业务流程｜跨部门协作流程演练',
+      '服务礼仪｜客户接待基础动作',
+      '销售新人｜首通电话开场练习',
+      '门店新人｜迎宾接待与推荐',
+      '生产新人｜质量标准与异常上报',
+      '客服新人｜标准问候与问题澄清',
+      '岗位认证｜考前模拟问答与纠偏',
+      '文化认同｜价值观冲突场景判断',
+      '信息安全｜客户资料使用边界',
+      '工作汇报｜新人周报与问题求助',
+      '时间管理｜多任务优先级排序',
+      '职场沟通｜向导师请求反馈',
+      '转正面谈｜自我复盘与发展计划',
+      '毕业答辩｜岗位胜任力展示'
+    ], 90, 78);
+
+    addCurated('门店/导购', '门店管理/导购销售/直播话术课程', '线下转化与直播增长', [
+      '门店导购｜迎宾接待与需求推荐',
+      '连带销售｜从单品成交到组合方案',
+      '异议处理｜顾客只看不买',
+      '会员转化｜权益解释与开卡邀约',
+      '店长晨会｜目标拆解与员工动员',
+      '巡店反馈｜陈列问题与店长纠偏',
+      '门店投诉｜现场安抚与补救',
+      '新品培训｜导购卖点讲解',
+      '竞品拦截｜顾客对比价格和口碑',
+      '闭店复盘｜日销售差距分析',
+      '直播开场｜留人话术和节奏设计',
+      '直播互动｜弹幕异议即时回应',
+      '直播促单｜限时权益与成交收口',
+      '主播复盘｜转化弱点和话术改进',
+      '场控协同｜库存、福利和节奏提醒',
+      '私域跟进｜直播后客户二次转化',
+      '门店带教｜新人导购实战辅导',
+      '区域督导｜多店问题反馈',
+      '高峰排班｜服务效率与体验平衡',
+      '退换货沟通｜规则解释与满意度维护',
+      '店长激励｜低迷门店士气恢复'
+    ], 91, 82);
+
+    addCurated('AI数字化', 'AI素养/数据分析/知识管理课程', 'AI落地与提效', [
+      'AI素养｜业务主管识别可落地场景',
+      'AI试点｜从想法到最小可行实验',
+      '人机协同｜用AI改造客服质检流程',
+      '数据汇报｜从看板异常到业务建议',
+      '知识萃取｜把优秀员工经验变成陪练模板',
+      '提示词沟通｜让AI输出可用业务方案',
+      'AI风险｜幻觉、隐私和合规边界说明',
+      '流程自动化｜识别重复工作和审批节点',
+      '数字化变革｜员工抵触的沟通安抚',
+      '数据质量｜业务人员反馈口径不一致',
+      '智能客服｜人机分工与升级规则',
+      '销售AI助手｜线索跟进建议使用',
+      '培训AI助教｜课程内容转陪练任务',
+      '管理看板｜指标异常解释与追问',
+      'AI项目汇报｜投入产出与风险表达',
+      '跨部门共创｜AI应用场景评审会',
+      '知识库运营｜过期知识纠偏机制',
+      'AI伦理｜员工监控边界沟通',
+      '数据驱动｜非技术经理的数据决策',
+      '智能体落地｜角色、工具、流程边界'
+    ], 94, 88);
+
+    addCurated('HR/培训', '人才发展/绩效管理/组织发展课程', '组织能力建设', [
+      '绩效校准｜处理部门间评分分歧',
+      '人才盘点｜识别高潜与关键岗位风险',
+      '离职挽留｜关键员工去意已决',
+      '晋升答辩｜候选人能力证据澄清',
+      '继任计划｜关键岗位后备人选讨论',
+      '培训需求｜业务部门真实痛点访谈',
+      '学习项目｜课程后行为转化追踪',
+      '领导力测评｜反馈解读与发展计划',
+      '组织诊断｜团队士气低迷访谈',
+      '员工关系｜冲突员工调解',
+      '绩效改进｜PIP面谈与支持边界',
+      '校招生培养｜导师反馈与成长节奏',
+      '干部轮岗｜岗位变化预期沟通',
+      '胜任力建模｜行为证据访谈',
+      'HRBP汇报｜从人事问题到业务建议',
+      '文化落地｜价值观行为案例复盘',
+      '培训转化｜课后行动计划辅导',
+      '人才保留｜核心骨干发展谈话',
+      '员工敬业｜低参与度团队访谈',
+      '组织变革｜岗位调整沟通'
+    ], 89, 80);
+
+    addCurated('法务/合规', '合规风控/行业方案课程', '风险治理与边界沟通', [
+      '数据安全｜客户信息使用边界沟通',
+      '反舞弊｜供应商异常报价内部提醒',
+      '舆情应对｜门店突发投诉公开传播',
+      '客户经理｜合规拜访与产品价值沟通',
+      '顾问销售｜风险揭示与适配沟通',
+      '一线主管｜质量异常与员工纠偏',
+      '项目经理｜客户延期投诉与资源协调',
+      '企业采购｜供应商压价与风险谈判',
+      '财务规范｜报销争议与制度解释',
+      '仓储物流｜异常处理与跨班组交接',
+      '安全生产｜员工违规操作劝阻',
+      '合同风险｜业务急单与条款底线',
+      '回款风险｜客户拖欠与信用边界',
+      '招投标合规｜灰色请求识别',
+      '门店合规｜促销承诺和广告边界',
+      '活动合规｜会议邀请边界',
+      '客户投诉｜适用边界争议处理',
+      '质量事故｜供应商责任追踪',
+      '环境安全｜现场隐患上报',
+      '内控审计｜业务部门整改沟通',
+      '危机沟通｜媒体追问与事实核验',
+      '跨境业务｜数据出境风险提醒'
+    ], 88, 82);
+
+    addCurated('主播/内容', '直播电商/短视频运营/私域转化课程', '内容成交与热点上新', [
+      '主播开场｜30秒留人与人设建立',
+      '主播促单｜福利节奏与成交收口',
+      '弹幕异议｜价格质疑即时回应',
+      '场控协同｜库存福利与节奏提醒',
+      '短视频选题｜从产品卖点到用户痛点',
+      '脚本评审｜钩子、证据和行动号召',
+      '投放复盘｜从数据波动到素材优化',
+      '私域转化｜直播后客户二次跟进',
+      '内容合规｜宣传边界和敏感词处理',
+      '达人合作｜商务沟通与交付确认',
+      '品牌舆情｜评论区争议回应',
+      '新品种草｜从功能讲解到场景体验'
+    ], 88, 82);
+
+    addCurated('采购', '采购谈判/供应商管理课程', '降本增效与供应风险', [
+      '采购谈判｜供应商涨价压价沟通',
+      '供应商管理｜交付延期责任确认',
+      '招投标澄清｜灰色请求识别与拒绝',
+      '供应商绩效｜质量问题和整改沟通',
+      '替代供应｜紧急缺货下的备选方案',
+      '采购需求｜业务部门规格反复变更',
+      '成本分析｜向业务解释降本空间',
+      '采购合规｜拒绝不当利益请求',
+      '交付保障｜关键物料延期预警',
+      '供应商复盘｜季度评估与续约谈判',
+      '跨部门协同｜采购销售交付边界确认',
+      '采购新人｜询价比价流程演练'
+    ], 86, 80);
+
+    addCurated('财务', '财务制度/预算管理/回款沟通课程', '经营纪律与资金安全', [
+      '财务报销｜制度争议解释与替代路径',
+      '预算沟通｜业务部门超预算申请',
+      '回款催收｜逾期账款与客户关系维护',
+      '费用管控｜销售活动投入产出澄清',
+      '付款排期｜供应商催款与现金流平衡',
+      '财务BP｜把财务语言转成业务建议',
+      '票据异常｜发票问题与补救路径',
+      '成本复盘｜项目毛利异常解释',
+      '财务制度｜新规落地的柔性沟通',
+      '经营分析｜从报表异常到行动建议',
+      '审计配合｜业务材料补充沟通',
+      '预算复盘｜季度费用偏差纠偏',
+      '应收账款｜客户逾期未付款沟通',
+      '应付账款｜供应商付款优先级解释',
+      '税务稽查｜资料补充与业务口径澄清',
+      '记账报税｜凭证缺失和跨部门催办',
+      '库存管理｜账实不符和责任确认',
+      '成本核算｜生产损耗异常复盘',
+      '费用报销｜销售招待费边界说明',
+      '发票管理｜开票信息错误补救',
+      '月结关账｜业务部门延迟提交资料',
+      '财务共享｜员工咨询高峰答疑',
+      '资金计划｜大额付款节奏沟通',
+      '税务筹划｜业务方案的税务风险提醒'
+    ], 84, 76);
+
+    addCurated('项目交付', '项目管理/客户交付/跨部门协同课程', '交付确定性', [
+      '项目经理｜客户延期投诉与资源协调',
+      '项目延期｜客户投诉与资源协调',
+      '项目复盘｜延期原因和改进承诺',
+      '跨部门排期｜销售交付产品边界确认',
+      '需求变更｜客户临时加需求的边界沟通',
+      '上线延期｜内部资源不足的客户说明',
+      '验收沟通｜客户不认可交付成果',
+      '风险周报｜提前暴露问题和备选方案',
+      '项目例会｜多方分歧下推进决策',
+      '交付新人｜客户沟通流程演练',
+      '售后移交｜项目结束后的责任交接',
+      '项目复购｜从交付满意到增购机会'
+    ], 85, 80);
+
+    addCurated('生产/质量', '一线管理/质量改善/安全生产课程', '现场管理与质量安全', [
+      '班组长纠偏｜一线员工违规操作',
+      '质量异常｜停线争议与风险升级',
+      '安全生产｜隐患发现后的现场劝阻',
+      '现场巡检｜问题反馈与整改承诺',
+      '外包管理｜服务标准不一致纠偏',
+      '应急响应｜突发事故的信息同步',
+      '质量复盘｜重复缺陷根因追踪',
+      '新员工上岗｜安全红线和标准动作',
+      '班组晨会｜生产目标和风险提醒',
+      '现场改善｜员工不配合改善动作',
+      '设备异常｜停机风险上报与协同',
+      '质量投诉｜客户反馈后的内部纠偏',
+      '一线主管｜质量异常与员工纠偏'
+    ], 86, 78);
+
+    addCurated('供应链/物流', '供应链协同/仓储物流/交付保障课程', '供应链韧性', [
+      '仓储交接｜库存异常跨班组确认',
+      '物流延误｜客户交付风险说明',
+      '供应链协同｜缺料风险预警沟通',
+      '库存盘点｜账实不符责任澄清',
+      '运输异常｜破损丢件的客户说明',
+      '发货排期｜销售催单和仓库产能冲突',
+      '退换货处理｜规则解释与补救承诺',
+      '跨仓调拨｜多仓协同优先级确认',
+      '供应风险｜关键节点预警上报',
+      '物流客服｜客户催单情绪安抚',
+      '仓储新人｜异常上报流程演练',
+      '承运商管理｜服务质量反馈与整改'
+    ], 84, 76);
+
+    addCurated('行业扩展', '行业化销售/服务/合规课程', '行业定制高价值', [
+      '客户经理｜合规价值表达',
+      '顾问销售｜风险揭示与适配沟通',
+      '活动邀约｜邀请边界和证据表达',
+      '客服升级｜投诉处理与留痕确认',
+      '销售承诺｜收益预期和免责说明',
+      '大客户方案｜降本增效沟通',
+      '区域督导｜门店整改沟通',
+      '招投标沟通｜评分点澄清',
+      '客户投诉｜情绪安抚与规则解释',
+      '现场服务｜客户不满与现场协调',
+      '承包商管理｜违规作业提醒',
+      '服务补救｜客户不满与改进承诺'
+    ], 87, 84);
+
+    addCurated('采购', '采购谈判/供应商管理课程', '降本增效与供应风险', [
+      '采购立项｜业务需求不清的澄清沟通',
+      '比价说明｜向业务解释价格差异',
+      '供应商准入｜资质不完整的拒绝沟通',
+      '框架协议｜年度价格和服务条款谈判',
+      '采购变更｜临时加急需求的优先级确认',
+      '采购验收｜交付不达标的整改要求',
+      '供应商淘汰｜低绩效供应商退出沟通',
+      '采购复盘｜重大采购项目经验沉淀'
+    ], 84, 78);
+
+    addCurated('项目交付', '项目管理/客户交付/跨部门协同课程', '交付确定性', [
+      '项目启动｜客户目标和边界确认',
+      '需求澄清｜客户描述模糊时的追问',
+      '进度同步｜关键节点延期预警',
+      '资源冲突｜争取产品和技术支持',
+      '变更报价｜新增需求的成本解释',
+      '验收争议｜客户认为效果不达标',
+      '上线培训｜客户使用不充分的辅导',
+      '交付复盘｜从一次项目到复购机会'
+    ], 84, 78);
+
+    addCurated('生产/质量', '一线管理/质量改善/安全生产课程', '现场管理与质量安全', [
+      '产线异常｜产能不足的跨班组协同',
+      '质量会议｜用数据推动责任部门整改',
+      '返工沟通｜员工抵触重复作业',
+      '安全培训｜老员工不遵守新规',
+      '设备维护｜生产和维修排期冲突',
+      '工艺变更｜新标准落地解释',
+      '现场5S｜员工认为检查太形式化',
+      '质量客户审厂｜现场问答准备'
+    ], 84, 76);
+
+    addCurated('供应链/物流', '供应链协同/仓储物流/交付保障课程', '供应链韧性', [
+      '供应计划｜需求预测波动沟通',
+      '库存预警｜缺货风险提前升级',
+      '仓库盘点｜差异责任与补救方案',
+      '发货优先级｜多个客户同时催单',
+      '物流索赔｜运输破损责任追踪',
+      '到货异常｜客户拒收后的协调',
+      '承运商复盘｜服务不达标整改',
+      '供应链复盘｜高峰期保障机制优化'
+    ], 83, 76);
+
+    addCurated('主播/内容', '直播电商/短视频运营/私域转化课程', '内容成交与热点上新', [
+      '直播复盘｜转化下滑原因分析',
+      '用户评论｜负面反馈的公开回应',
+      '选品沟通｜产品卖点和用户需求对齐',
+      '内容排期｜热点追踪和品牌节奏平衡',
+      '私域社群｜沉默用户重新激活',
+      '达人复盘｜合作效果不达标沟通',
+      '短视频复盘｜完播率低的脚本优化',
+      '内容合规｜夸大宣传风险提醒'
+    ], 84, 78);
+
+    addCurated('行业扩展', '行业化销售/服务/合规课程', '行业定制高价值', [
+      '渠道伙伴｜政策解释和利益平衡',
+      '企业大客户｜多角色决策链推进',
+      '区域经理｜跨门店标准落地沟通',
+      '售前顾问｜方案价值和交付边界说明',
+      '客户成功｜低活跃客户价值唤醒',
+      '合规服务｜客户资料使用授权确认',
+      '现场顾问｜客户不配合实施的沟通',
+      '高层汇报｜试点结果和扩展建议'
+    ], 84, 80);
+
+    const seenScenarioKeys = new Set();
+    const curatedScenarios = [];
+    scenarios.forEach(item => {
+      const key = `${item.role}::${item.title}`;
+      if (seenScenarioKeys.has(key)) return;
+      seenScenarioKeys.add(key);
+      curatedScenarios.push(item);
+    });
+    const cappedByCategory = [];
+    const categoryCounts = {};
+    curatedScenarios
+      .sort((a, b) => (b.priority + b.pay) - (a.priority + a.pay))
+      .forEach(item => {
+        categoryCounts[item.role] = categoryCounts[item.role] || 0;
+        if (categoryCounts[item.role] >= 30) return;
+        categoryCounts[item.role] += 1;
+        cappedByCategory.push(item);
+      });
+    scenarios.splice(0, scenarios.length, ...cappedByCategory);
+
+    const problems = {
+      '用户体验': [
+        { title: '用户端对话进度不清晰', desc: '后台设置体验较友好，但用户端需要明确当前轮次、完成进度、是否已达成关键目标。', priority: 'P0', action: '增加对话阶段条、关键任务完成提示、剩余轮次和阶段性反馈。' },
+        { title: '提前退出缺少产品化处理', desc: '用户临时退出时，如果没有保存、确认和续练入口，会造成训练中断和数据浪费。', priority: 'P0', action: '提供退出确认、保存草稿、稍后继续、退出原因记录。' },
+        { title: '练后反馈以文本为主', desc: '问答不及格时，除文本建议和能力图外，还应连接课程卡片、视频课和二次练习。', priority: 'P1', action: '在能力短板下挂课程卡片、视频链接、标准话术和再练一次按钮。' }
+      ],
+      '说明与转化': [
+        { title: '缺少角色-场景-目标说明', desc: '用户需要知道这个陪练适合哪些企业角色、用于何种业务场景、要达成什么能力目标。', priority: 'P0', action: '为每个陪练生成课程简介：角色、场景、目标、权威来源、适用边界。' },
+        { title: '课程权威性露出不足', desc: '若引用管理课程、行业话术或制度文件，需要让用户知道评分标准从哪里来。', priority: 'P1', action: '展示依据来源：企业制度、课程章节、销冠话术、管理框架或专家审核。' },
+        { title: '付费引导与能力短板未连接', desc: '用户看到“不及格”后，需要一个自然的提升路径，而不是只看到扣分。', priority: 'P1', action: '能力图谱下推荐对应课程包、训练包、讲师点评或企业定制服务。' }
+      ],
+      '角色与投放': [
+        { title: '企业角色覆盖度缺少统计', desc: '需要统计各角色的覆盖度、使用频次、通过率和付费比例，以指导投放渠道。', priority: 'P0', action: '建立角色维度看板：角色、模板数、练习人数、完成率、付费转化。' },
+        { title: '模板过度按课程分类', desc: '后台除课程类划分外，更应按企业角色设计入口，例如采购、财务、人事、管理层、仓储、销售、客服。', priority: 'P0', action: '新增角色模板库：角色包、场景包、行业包三种选择方式。' },
+        { title: '被动等企业提需求风险较高', desc: '若缺少主动场景资产，容易陷入每个客户重新分析、重新配置。', priority: 'P1', action: '先沉淀 20-40 个高频场景，作为售前演示和项目交付底座。' }
+      ],
+      '后台生成': [
+        { title: '后台仍需用户手动输入过多字段', desc: '陪练名称、用户群体、任务场景、评分规则、通过设置都依赖人工配置。', priority: 'P0', action: '上传文档后自动生成完整配置，并允许人工审核修改。' },
+        { title: '评分配置门槛高', desc: '培训负责人未必懂如何把课程目标转成文本可评价行为。', priority: 'P0', action: '自动生成 4-6 个评分维度、权重、1/3/5 分锚点和通过规则。' },
+        { title: '话术环节与评分未充分联动', desc: '已有话术环节能力，但需和晋级条件、评分配置、课程推荐形成闭环。', priority: 'P1', action: '每个环节配置目标行为、AI阻力、晋级条件、评分维度和补救资源。' }
+      ],
+      '内容时效': [
+        { title: '经典课程体系可能显得陈旧', desc: '德鲁克、DDI、经理人核心技能等体系适合做底层能力框架，但企业也会关注近一年甚至近一个月的新问题。', priority: 'P0', action: '建立“经典底座 + 热点补丁”的内容机制：经典课程负责能力模型，热点内容负责最新业务场景、话术和案例。' },
+        { title: '缺少热点场景快速上新机制', desc: '抖音、直播电商、AI工具、行业政策、客户投诉热点变化很快，传统课程开发周期难以跟上。', priority: 'P0', action: '建立月度热点雷达：从短视频课程、行业报告、客户一线需求、政策变化中抽取 5-10 个热点陪练候选。' },
+        { title: '热点内容需要专业审核避免浅层化', desc: '热点课程时效强但质量参差不齐，如果直接进入陪练，可能损害时代光华的专业可信度。', priority: 'P1', action: '设置三层审核：业务热度验证、课程专家审核、AI陪练可评分改写，确保热点变成可练习的专业场景。' },
+        { title: '课程资产和市场运营未形成上新节奏', desc: '如果没有固定节奏，市场端很难持续讲“我们跟得上企业最新问题”。', priority: 'P1', action: '产品化“月度热点陪练包”和“季度管理趋势包”，用于市场传播、老客户激活和增购。' }
+      ]
+    };
+
+    const competitorColumns = {
+      all: ['vendor', 'position', 'roles', 'scenario', 'advantage', 'weakness', 'opportunity'],
+      role: ['vendor', 'roles', 'scenario', 'advantage', 'weakness'],
+      product: ['vendor', 'product', 'data', 'advantage', 'weakness'],
+      gap: ['vendor', 'advantage', 'weakness', 'opportunity']
+    };
+
+    const columnLabels = {
+      vendor: '对象',
+      position: '公开定位',
+      roles: '用户角色',
+      scenario: '场景覆盖',
+      product: '产品能力',
+      data: '数据闭环',
+      advantage: '相对优势',
+      weakness: '相对短板',
+      opportunity: '我们的机会'
+    };
+
+    const competitors = [
+      {
+        vendor: '北森 AI陪练',
+        position: '公开资料强调“从学知识到练技能”，以销售/客服/管理岗位实战能力提升为核心。',
+        roles: '销售、客服、管理岗位，以及 HR/培训管理者。',
+        scenario: '客户接待、拜访、商务谈判、话术萃取、团队能力训练。',
+        product: '自动构建剧本、模拟客户画像、数字人/多种陪练模式、即时反馈、金牌话术推荐。',
+        data: '团队数据看板、自定义评分维度、组织架构下能力对比，且与 HCM/人才发展生态有联动叙事。',
+        advantage: '人才管理生态强，销售/客服/管理岗位叙事完整，数据看板和组织能力画像表达成熟。',
+        weakness: '对轻量化场景包、客户自助配置门槛和跨行业快速落地的公开细节仍可继续观察。',
+        opportunity: '我们应避开纯功能堆砌，强化“角色模板库 + 文档生成 + 练后课程推荐”的轻量切入。'
+      },
+      {
+        vendor: '云学堂',
+        position: '公开报道中更偏企业学习平台与 AI 培训能力，服务企业数字化培训和业务赋能。',
+        roles: '培训部门、企业大学、店员、医药代表、营销/业务人群。',
+        scenario: '话术培训、店员培训、医药代表拜访、企业学习项目。',
+        product: '学习平台、内容、咨询服务结合；AI 培训用于业务场景下的智能化陪练。',
+        data: '学习平台天然有课程、学习、培训项目数据优势，但公开材料对陪练细节披露有限。',
+        advantage: '企业学习平台、内容与咨询服务基础强，适合承接大型培训项目和企业大学场景。',
+        weakness: 'AI陪练的角色模板、评分细节、用户端练习体验在公开资料中不够具体。',
+        opportunity: '我们可以在“用户端练习体验”和“场景模板生成”上做得更具体、更可演示。'
+      },
+      {
+        vendor: '知学云 AI陪练',
+        position: '公开资料强调 AI 学习产品系列，AI陪练可结合业务知识生成对话试题。',
+        roles: '培训部门、不同部门与岗位的业务人员。',
+        scenario: '上传业务知识、生成知识点、贴近真实业务场景的对话试题。',
+        product: '智能出题、业务知识解析、对话试题生成、按部门岗位定制训练题目。',
+        data: '侧重培训效率和个性化训练，公开页面对团队能力数据闭环描述相对少。',
+        advantage: '“上传业务知识生成训练题目”的心智清晰，能直接降低培训部门准备成本。',
+        weakness: '公开资料更强调出题和任务生成，对练后转化、课程推荐、组织级数据闭环呈现较弱。',
+        opportunity: '可借鉴“上传资料生成任务”，进一步补齐评分、通过规则、课程推荐和运营看板。'
+      },
+      {
+        vendor: '我们当前方向',
+        position: '从管理者培训模板库出发，扩展到企业角色场景化陪练体系。',
+        roles: '中层管理、培训/HR、销售、客服、门店、主播、职能运营。',
+        scenario: '领导力、绩效、销售、客服、门店管理、主播话术、新员工培训、采购财务等。',
+        product: '已有后台配置与话术环节基础，需要补用户端体验、自动生成、角色模板库和多模态练后引导。',
+        data: '需新增角色覆盖、付费比例、完成率、能力短板、课程转化的数据面板。',
+        advantage: '可以更灵活地按角色和业务场景组织模板，做成可售前演示、可项目交付的场景资产。',
+        weakness: '当前用户端体验、课程说明、自动生成、数据运营和付费引导仍需要产品化补齐。',
+        opportunity: '用“角色场景库 + 一键生成 + 练后付费引导”形成差异化样板。'
+      }
+    ];
+
+    const competitorVisual = [
+      {
+        name: '北森 AI陪练',
+        color: '#2f7df6',
+        badge: 'AI Learning生态',
+        summary: '强在人事/人才一体化、AI Learning全链路和数据闭环。',
+        tags: ['HCM一体化', 'AI陪练', '领导力教练', '数据看板'],
+        levels: { scene: '领先', leadership: '领先', ai: '领先', content: '中等', experience: '较强', data: '领先', service: '较强', freshness: '较强' },
+        opportunities: ['避免硬碰HCM生态', '主打轻量场景包', '用课程沉淀做差异化']
+      },
+      {
+        name: '得助智能',
+        color: '#16a085',
+        badge: '营销服智能陪练',
+        summary: '强在销售/客服话术、呼叫中心数据、VR/数字人和学练考评闭环。',
+        tags: ['销售客服', '话术挖掘', 'VR/数字人', '金融案例'],
+        levels: { scene: '较强', leadership: '中等', ai: '较强', content: '中等', experience: '较强', data: '较强', service: '较强', freshness: '中等' },
+        opportunities: ['避开呼叫中心重场景', '强化课程方法论', '做管理和培训体系差异']
+      },
+      {
+        name: '云学堂',
+        color: '#31a66a',
+        badge: '学习平台',
+        summary: '强在企业学习平台、内容服务和大型培训项目承接。',
+        tags: ['企业大学', '内容服务', '培训项目', '店员/医药'],
+        levels: { scene: '中等', leadership: '中等', ai: '中等', content: '较强', experience: '中等', data: '中等', service: '较强', freshness: '中等' },
+        opportunities: ['用户练习体验更具体', '场景模板生成更可演示', '补练后转化闭环']
+      },
+      {
+        name: '知学云 AI陪练',
+        color: '#7d62e6',
+        badge: '知识生成',
+        summary: '强在上传业务知识、生成知识点和对话试题的心智。',
+        tags: ['上传资料', '知识点生成', '对话试题', '降本提效'],
+        levels: { scene: '中等', leadership: '待验证', ai: '较强', content: '中等', experience: '中等', data: '待验证', service: '中等', freshness: '较强' },
+        opportunities: ['补齐评分规则', '接入课程推荐', '强化组织数据闭环']
+      },
+      {
+        name: '时代光华方向',
+        color: '#d98b28',
+        badge: '当前策略位',
+        summary: '优势在课程沉淀和管理训练资产，需补产品化体验与时效上新。',
+        tags: ['德鲁克/DDI', '场景库', '文档生成', '热点补丁'],
+        levels: { scene: '较强', leadership: '领先', ai: '待补齐', content: '领先', experience: '待补齐', data: '待补齐', service: '中等', freshness: '待补齐' },
+        opportunities: ['经典课程转陪练资产', '月度热点包', '练后课程付费引导']
+      }
+    ];
+
+    const competitorDimensions = [
+      { key: 'scene', group: 'role', title: '真实业务场景还原', note: '是否有角色、背景、目标、阻力和复杂对话策略', evidence: ['角色完整度', '业务阻力', '多轮策略'] },
+      { key: 'leadership', group: 'role', title: '领导力/管理者训练', note: '是否覆盖绩效、辅导、授权、冲突、向上、协同等管理场景', evidence: ['管理场景覆盖', '课程框架', '开箱模板'] },
+      { key: 'ai', group: 'product', title: 'AI生成与陪练能力', note: '是否能自动生成剧本、评分、反馈、话术和多轮演练', evidence: ['剧本生成', '评分反馈', '多模式训练'] },
+      { key: 'content', group: 'product', title: '课程/知识体系沉淀', note: '是否有可支撑评分和场景设计的课程、方法论和案例资产', evidence: ['课程资产', '方法论', '案例库'] },
+      { key: 'experience', group: 'product', title: '用户端练习体验', note: '是否有进度、退出、反馈、推荐、移动端体验和沉浸交互', evidence: ['练习路径', '反馈体验', '移动交互'] },
+      { key: 'data', group: 'gap', title: '组织数据闭环', note: '是否能连接人岗、能力、练习、课程、通过率和组织看板', evidence: ['人岗数据', '能力画像', '组织看板'] },
+      { key: 'service', group: 'gap', title: '实施与运营服务', note: '是否有持续运营、专家服务、项目落地和客户成功机制', evidence: ['CSM服务', '专家运营', '项目落地'] },
+      { key: 'freshness', group: 'gap', title: '热点上新与内容时效', note: '是否能快速吸收AI、直播、政策、行业热点并形成训练包', evidence: ['热点雷达', '月度上新', '专家审核'] }
+    ];
+
+    const competitorEvidence = {
+      scene: {
+        '北森 AI陪练': '附件选型手册强调真实场景模拟、多剧本组合、客户画像和管理/销售/客服岗位实战。',
+        '得助智能': '公开页强调销售、客服等业务情境的自动化场景构建，并支持真实业务环境模拟。',
+        '云学堂': '公开报道覆盖话术、店员、医药代表等培训场景，但对AI陪练场景结构披露有限。',
+        '知学云 AI陪练': '公开资料强调上传业务知识生成对话试题，适合知识问答类场景。',
+        '时代光华方向': '已整理207个精选角色场景，适合包装成售前样板和标准模板库。'
+      },
+      leadership: {
+        '北森 AI陪练': '附件中有AI领导力教练、近百个管理场景和测-练-学链路表述。',
+        '得助智能': '公开资料主轴更偏销售、客服、金融、零售等业务话术，管理者领导力场景不是主叙事。',
+        '云学堂': '优势更偏学习平台和培训项目承接，公开材料中领导力AI陪练细节较少。',
+        '知学云 AI陪练': '公开资料以业务知识生成训练题为主，管理者场景深度需继续验证。',
+        '时代光华方向': '时代光华管理者课程、德鲁克/DDI等沉淀厚，领导力场景是天然优势。'
+      },
+      ai: {
+        '北森 AI陪练': '附件明确提到AI陪练、数字人、多模式训练、反馈和团队数据看板。',
+        '得助智能': '公开页写到大模型+小模型、知识库与剧本生成、AI话术对练、多维能力测评。',
+        '云学堂': '公开资料有AI培训能力，但脚本、评分、反馈细节未充分展开。',
+        '知学云 AI陪练': '公开资料强调业务知识解析、知识点生成和对话试题生成。',
+        '时代光华方向': '当前重点仍是补文档生成、评分规则生成和用户端完整练习链路。'
+      },
+      content: {
+        '北森 AI陪练': '强在人才/HCM生态，课程方法论沉淀不是其公开叙事的主卖点。',
+        '得助智能': '公开资料强调话术库、FAQ、词库、对话任务和历史服务数据沉淀。',
+        '云学堂': '企业学习平台、内容服务和大型培训项目承接基础较强。',
+        '知学云 AI陪练': '可基于上传业务知识生成训练内容，但公开课程体系厚度有限。',
+        '时代光华方向': '优势来自长期课程资产、管理方法论、企业培训交付经验和专家资源。'
+      },
+      experience: {
+        '北森 AI陪练': '附件强调新一代产品体验、AI Learning、练习反馈和看板闭环。',
+        '得助智能': '公开页显示PC/小程序、多模式对练、实时反馈、VR实训和数字人情景。',
+        '云学堂': '学习平台体验成熟，但AI陪练用户端细节需看实际产品。',
+        '知学云 AI陪练': '公开资料更强调生成训练题，沉浸练习体验披露较少。',
+        '时代光华方向': '已识别对话进度、提前退出、练后推荐等体验短板，需要产品补齐。'
+      },
+      data: {
+        '北森 AI陪练': '附件强调HCM一体化、组织能力画像、团队数据看板和人才发展联动。',
+        '得助智能': '公开页强调学员能力画像、多维数据统计、质检问题关联学习任务。',
+        '云学堂': '学习平台有学习数据基础，但与人岗/能力闭环的公开证据较北森弱。',
+        '知学云 AI陪练': '公开资料较少呈现组织级能力看板和人才数据联动。',
+        '时代光华方向': '需要新建角色覆盖、完成率、通过率、课程转化和客户ROI看板。'
+      },
+      service: {
+        '北森 AI陪练': '附件提到主动专业服务，且企业级HCM实施经验较强。',
+        '得助智能': '公开案例覆盖金融、客服、零售等行业，并强调客户案例与业务结果。',
+        '云学堂': '大型培训项目和内容服务承接能力较强，适合企业大学场景。',
+        '知学云 AI陪练': '公开资料对专家运营和持续交付服务披露有限。',
+        '时代光华方向': '具备培训交付经验，但需把专家审核、模板上新和客户成功机制产品化。'
+      },
+      freshness: {
+        '北森 AI陪练': 'AI Learning方向新，但公开材料中热点内容月度上新机制需继续验证。',
+        '得助智能': '官网动态更新密集，但核心仍围绕销售客服话术和行业服务场景。',
+        '云学堂': '内容服务基础较强，热点响应机制在公开AI陪练资料中不够具体。',
+        '知学云 AI陪练': '上传资料生成训练题更容易承接企业最新业务知识。',
+        '时代光华方向': '经典课程厚重但可能显旧，需要建立热点雷达、月度上新和专家审核机制。'
+      }
+    };
+
+    const competitorDiagnostics = {
+      '北森 AI陪练': {
+        threat: '北森对我们的最大压力不是单点AI陪练，而是AI Learning与HCM、人才发展、组织数据的组合叙事。客户会觉得它更像完整人才能力平台。',
+        learn: '可借鉴其“测-练-学-看板”的闭环表达，把陪练结果接到能力画像、团队短板和管理者发展路径。',
+        catchup: ['补组织看板', '补测练学闭环', '补管理者场景样板'],
+        surpass: '时代光华应避开HCM硬拼，用课程权威、专家审核和岗位场景库做更轻、更快、更可交付的陪练方案。'
+      },
+      '得助智能': {
+        threat: '得助强在销售客服等一线话术训练，尤其是语音、质检、数字人、VR和营销服数据场景，业务实战感强。',
+        learn: '可借鉴其“真实业务数据/话术库/质检问题生成训练任务”的产品路径，让陪练不是静态模板，而是从一线问题生成。',
+        catchup: ['补话术库接入', '补质检到陪练', '补语音/多模态体验'],
+        surpass: '时代光华不应只追销售客服，而应把管理者、财务、采购、HR等通用岗位场景做厚，形成企业全岗位能力训练体系。'
+      },
+      '云学堂': {
+        threat: '云学堂强在企业学习平台、内容服务和培训项目承接，容易进入企业大学和培训部门预算。',
+        learn: '可借鉴其平台化服务和项目承接方式，把AI陪练包装进培训项目、课程运营和学习平台升级。',
+        catchup: ['补培训项目包', '补企业大学话术', '补课后转化数据'],
+        surpass: '时代光华要突出“课程沉淀+场景练习+专家审核”，用更具体的岗位样板减少客户理解成本。'
+      },
+      '知学云 AI陪练': {
+        threat: '知学云的心智在“上传知识生成训练题”，对培训部门有直接降本吸引力。',
+        learn: '可借鉴其上传资料生成任务的低门槛入口，降低后台配置成本。',
+        catchup: ['补文档一键生成', '补评分规则生成', '补知识点到对话任务'],
+        surpass: '时代光华要在生成后补专家审核、课程推荐和能力数据闭环，避免只停留在“自动出题”。'
+      },
+      '时代光华方向': {
+        threat: '当前短板在产品化体验、自动生成、数据闭环和内容时效机制，若不补齐，会被竞品用“AI能力更完整”压制。',
+        learn: '内部要把课程资产从内容库转成可练、可评、可运营的岗位场景资产。',
+        catchup: ['补用户端体验', '补生成后台', '补运营看板'],
+        surpass: '超越点是“经典课程底座+真实岗位场景+专家审核+热点上新”，做成企业通用岗位能力训练基础设施。'
+      }
+    };
+
+    let activeRole = '全部';
+    let activeSubcat = '全部';
+    let activeSort = 'priority';
+    let selected = new Set();
+    let activeProblem = '用户体验';
+    let activeVendorView = 'all';
+    let activeCompetitor = '时代光华方向';
+    let activeCompetitorDim = 'scene';
+
+    const roleFilters = document.getElementById('roleFilters');
+    const scenarioGrid = document.getElementById('scenarioGrid');
+    const visibleCount = document.getElementById('visibleCount');
+    const subcatStrip = document.getElementById('subcatStrip');
+    const selectedCount = document.getElementById('selectedCount');
+    const metricSelected = document.getElementById('metricSelected');
+    const selectedList = document.getElementById('selectedList');
+    const selectedBar = document.getElementById('selectedBar');
+    const heroSelectedBar = document.getElementById('heroSelectedBar');
+    const recommendationBox = document.getElementById('recommendationBox');
+    const searchInput = document.getElementById('searchInput');
+    const sortExplainer = document.getElementById('sortExplainer');
+    const roleCoverageChips = document.getElementById('roleCoverageChips');
+    const toast = document.getElementById('toast');
+
+    const reportRoleOrder = ['全部', '管理者', '销售', '客服/售后', '新员工', 'HR/培训', '财务', '采购', '法务/合规', '生产/质量', '供应链/物流', '项目交付', '门店/导购', '主播/内容', 'AI数字化', '行业扩展'];
+
+    const sortDefinitions = {
+      priority: {
+        label: '推荐优先级',
+        basis: '判断哪个场景更值得优先进入样板库：成交价值 40% + 适用广度 30% + 内容成熟度 20% + 热点/紧迫度 10%。',
+        note: '用于排 MVP 与售前样板，不等于场景好坏。'
+      },
+      pay: {
+        label: '商业价值',
+        basis: '看它能否带来付费理由：客户预算意愿、售前演示冲击力、课程/训练包转化、续费或定制空间。',
+        note: '这是商机强弱，不是单价。'
+      },
+      coverage: {
+        label: '适用广度',
+        basis: '看它能适用于多少客户和岗位：通用岗位数量、行业迁移性、课程资产复用度、标准化交付难度。',
+        note: '适合做模板库底座和规模化投放。'
+      }
+    };
+
+    function roleCounts() {
+      const counts = { '全部': scenarios.length };
+      scenarios.forEach(item => counts[item.role] = (counts[item.role] || 0) + 1);
+      return counts;
+    }
+
+    const subcategoryRulesByRole = {
+      '管理者': [
+        ['目标绩效', /目标|绩效|MBO|评价|校准|数据/],
+        ['辅导授权', /辅导|带教|培养|授权|高潜|继任|发展/],
+        ['沟通协同', /沟通|协同|冲突|向上|汇报|争取|跨部门|信任/],
+        ['团队文化', /团队|文化|新生代|角色转身|激励|下属/],
+        ['风险决策', /风险|决策|异常|控制|问题解决/]
+      ],
+      '销售': [
+        ['获客开场', /电销|开场|破冰|线索|激活/],
+        ['需求方案', /需求|方案|呈现|解决方案|行业客户|招投标/],
+        ['异议谈判', /异议|价格|谈判|竞品|商务/],
+        ['续费回款', /续费|回款|客户成功|复购|流失/],
+        ['销售管理', /销售管理|晨会|新人|协同|复盘|高层拜访|渠道|转介绍/]
+      ],
+      '客服/售后': [
+        ['投诉升级', /投诉|升级|退款|差评|危机/],
+        ['质检改进', /质检|复盘|热线|不合格|低分/],
+        ['技术支持', /技术|复杂问题|工单|知识库|定位/],
+        ['增购挽留', /挽留|增购|VIP|服务销售|流失/],
+        ['客服带教', /客服新人|班组长|外包|交接|标准话术/]
+      ],
+      '新员工': [
+        ['入职文化', /入职|文化|破冰|价值观/],
+        ['岗位SOP', /SOP|流程|产品知识|安全|信息安全|生产/],
+        ['带教反馈', /导师|带教|试用期|反馈|转正/],
+        ['岗位认证', /认证|考前|毕业答辩|上岗/],
+        ['职场沟通', /汇报|时间管理|职场沟通|求助/]
+      ],
+      '门店/导购': [
+        ['导购成交', /导购|接待|连带|异议|竞品|退换货/],
+        ['店长管理', /店长|晨会|巡店|区域督导|排班|激励/],
+        ['会员私域', /会员|私域/],
+        ['现场服务', /投诉|新品|闭店|高峰/]
+      ],
+      '主播/内容': [
+        ['直播成交', /直播|主播|弹幕|促单|场控|私域/],
+        ['内容脚本', /短视频|脚本|选题|内容|钩子|卖点/],
+        ['投放复盘', /投放|数据|转化|复盘|ROI/]
+      ],
+      'AI数字化': [
+        ['AI素养', /AI素养|提示词|AI风险|伦理/],
+        ['场景试点', /试点|场景|项目汇报|共创/],
+        ['人机协同', /人机|智能客服|销售AI助手|培训AI助教|智能体/],
+        ['数据分析', /数据|看板|数据质量|数据驱动/],
+        ['知识资产', /知识|知识库|萃取|自动化/]
+      ],
+      'HR/培训': [
+        ['绩效人才', /绩效|人才盘点|继任|晋升|胜任力/],
+        ['员工关系', /离职|员工关系|保留|敬业|冲突/],
+        ['学习发展', /培训|学习项目|转化|测评|发展计划/],
+        ['组织诊断', /组织|文化|变革|轮岗/],
+        ['业务访谈', /HRBP|需求|访谈/]
+      ],
+      '采购': [
+        ['供应商谈判', /涨价|压价|价格|报价|谈判|框架协议/],
+        ['供应商管理', /供应商管理|准入|资质|绩效|淘汰|续约/],
+        ['采购需求', /立项|需求不清|规格|临时加急|需求变更/],
+        ['招投标合规', /招投标|灰色|不当利益|拒绝|合规/],
+        ['交付保障', /交付|延期|缺货|物料|供应/],
+        ['成本协同', /成本|降本|比价|价格差异/],
+        ['采购验收', /验收|不达标|整改|交付不达标/]
+      ],
+      '财务': [
+        ['应收应付', /应收|应付|回款|付款|逾期账款|客户逾期|供应商催款|现金流|账款/],
+        ['税务票据', /税务|稽查|税务筹划|纳税|发票|票据|开票|凭证|报税/],
+        ['预算费用', /报销|预算|费用|超预算|投入产出|招待费/],
+        ['成本库存', /库存|成本|损耗|账实|毛利/],
+        ['经营分析', /报表|经营|偏差|财务BP|业务建议|月结|关账/],
+        ['内控审计', /制度|审计|材料|财务共享|新规|资料提交/]
+      ],
+      '项目交付': [
+        ['项目启动', /启动|目标|边界确认/],
+        ['需求澄清', /需求澄清|描述模糊|追问/],
+        ['进度风险', /进度|延期|风险|周报|预警/],
+        ['资源协同', /资源|排期|跨部门|例会|决策/],
+        ['需求变更', /需求|变更|边界|临时|加需求/],
+        ['验收争议', /验收|不认可|效果不达标|满意/],
+        ['项目复盘', /复盘|移交|复购|项目结束/]
+      ],
+      '生产/质量': [
+        ['质量异常', /质量|缺陷|返工|客户审厂|质量投诉/],
+        ['安全生产', /安全|隐患|事故|应急|违规操作/],
+        ['产线协同', /产线|产能|停机|设备|维修/],
+        ['现场改善', /现场|巡检|整改|纠偏|改善|5S/],
+        ['班组管理', /班组|一线|员工|新人|晨会/],
+        ['工艺标准', /工艺|标准|新规|新标准/]
+      ],
+      '供应链/物流': [
+        ['库存管理', /库存|盘点|账实|缺货|库存预警/],
+        ['仓储交接', /仓储|交接|跨仓|调拨/],
+        ['物流异常', /物流|运输|发货|破损|丢件|催单|拒收/],
+        ['供应风险', /供应链|缺料|风险|预警|承运商|需求预测/],
+        ['退换补救', /退换货|补救|规则|客户说明/]
+      ],
+      '行业扩展': [
+        ['大客户方案', /大客户|方案|售前|顾问|价值/],
+        ['渠道伙伴', /渠道|伙伴|政策|利益平衡/],
+        ['区域督导', /区域|门店|标准|整改/],
+        ['合规服务', /合规|授权|资料|边界/],
+        ['客户成功', /客户成功|低活跃|唤醒|复购/],
+        ['高层汇报', /高层|汇报|试点|扩展/]
+      ],
+      '法务/合规': [
+        ['数据合规', /数据安全|跨境|信息|隐私/],
+        ['廉洁风控', /反舞弊|合同|回款|招投标|内控|供应商/],
+        ['行业合规', /医药|金融|适当性|学术/],
+        ['危机舆情', /舆情|危机|媒体|投诉/]
+      ]
+    };
+
+    function scenarioSubcat(item) {
+      const rules = subcategoryRulesByRole[item.role] || [['其他高频', /./]];
+      const titleMatch = rules.find(([, pattern]) => pattern.test(item.title));
+      if (titleMatch) return titleMatch[0];
+      const context = [item.title, item.trend].join('');
+      const match = rules.find(([, pattern]) => pattern.test(context));
+      return match ? match[0] : '其他高频';
+    }
+
+    function subcatCounts() {
+      const scoped = scenarios.filter(item => activeRole === '全部' || item.role === activeRole);
+      const counts = { '全部': scoped.length };
+      scoped.forEach(item => {
+        const name = scenarioSubcat(item);
+        counts[name] = (counts[name] || 0) + 1;
+      });
+      return counts;
+    }
+
+    function renderSubcats() {
+      const counts = subcatCounts();
+      if (!counts[activeSubcat]) activeSubcat = '全部';
+      subcatStrip.innerHTML = Object.entries(counts)
+        .sort((a, b) => {
+          if (a[0] === '全部') return -1;
+          if (b[0] === '全部') return 1;
+          if (a[0] === '其他高频') return 1;
+          if (b[0] === '其他高频') return -1;
+          return b[1] - a[1];
+        })
+        .map(([name, count]) => `
+          <button class="subcat-btn ${name === activeSubcat ? 'active' : ''}" data-subcat="${name}">
+            ${name}<span>${count}</span>
+          </button>
+        `).join('');
+    }
+
+    function renderRoleFilters() {
+      const counts = roleCounts();
+      const roles = reportRoleOrder.filter(role => counts[role]).concat(Object.keys(counts).filter(role => !reportRoleOrder.includes(role)));
+      roleFilters.innerHTML = roles.map(role => `
+        <button class="filter-btn ${role === activeRole ? 'active' : ''}" data-role="${role}">
+          <span>${role}</span><span>${counts[role]}</span>
+        </button>
+      `).join('');
+    }
+
+    function renderSummaryRoleChips() {
+      const counts = roleCounts();
+      const roles = reportRoleOrder
+        .filter(role => role !== '全部' && counts[role])
+        .concat(Object.keys(counts).filter(role => role !== '全部' && !reportRoleOrder.includes(role)));
+      roleCoverageChips.innerHTML = roles.map(role => `
+        <button class="priority-chip ${role === activeRole ? 'active' : ''}" data-role="${role}" type="button">
+          <i></i>${role}<span class="role-count">${counts[role]}</span>
+        </button>
+      `).join('');
+    }
+
+    function filteredScenarios() {
+      const key = searchInput.value.trim();
+      return scenarios
+        .map((item, index) => ({ ...item, index }))
+        .filter(item => activeRole === '全部' || item.role === activeRole)
+        .filter(item => activeSubcat === '全部' || scenarioSubcat(item) === activeSubcat)
+        .filter(item => !key || [item.role, item.title, item.scene, item.target, item.source, item.trend].join('').includes(key))
+        .sort((a, b) => {
+          const primary = b[activeSort] - a[activeSort];
+          if (primary) return primary;
+          if (activeSort === 'priority') return (b.pay + b.coverage) - (a.pay + a.coverage);
+          if (activeSort === 'pay') return (b.priority + b.coverage) - (a.priority + a.coverage);
+          return (b.priority + b.pay) - (a.priority + a.pay);
+        });
+    }
+
+    function scoreLevel(score) {
+      if (score >= 90) return '强';
+      if (score >= 80) return '较强';
+      if (score >= 70) return '中';
+      return '待验证';
+    }
+
+    function scoreRows(item) {
+      const rows = [
+        {
+          key: 'priority',
+          cls: 'priority-score',
+          title: '优先级',
+          desc: '推荐进入样板库的顺序',
+          score: item.priority,
+          level: scoreLevel(item.priority),
+          basis: sortDefinitions.priority.basis
+        },
+        {
+          key: 'pay',
+          cls: 'value-score',
+          title: '商业价值',
+          desc: '成交、转化、续费空间',
+          score: item.pay,
+          level: commercialValueLabel(item.pay).replace('商机', ''),
+          basis: sortDefinitions.pay.basis
+        },
+        {
+          key: 'coverage',
+          cls: 'coverage-score',
+          title: '适用广度',
+          desc: '可适配多少客户/岗位',
+          score: item.coverage,
+          level: scoreLevel(item.coverage),
+          basis: sortDefinitions.coverage.basis
+        }
+      ];
+      const active = rows.find(row => row.key === activeSort) || rows[0];
+      const secondaryKey = activeSort === 'pay' ? 'priority' : 'coverage';
+      const secondary = rows.find(row => row.key === secondaryKey && row.key !== active.key)
+        || rows.find(row => row.key !== active.key);
+      return [active, secondary];
+    }
+
+    function renderSortExplainer() {
+      const def = sortDefinitions[activeSort];
+      sortExplainer.innerHTML = `<b>${def.label}</b><span>${def.basis} <i>${def.note}</i></span>`;
+    }
+
+    function commercialValueLabel(score) {
+      if (score >= 86) return '商机高';
+      if (score >= 78) return '商机中高';
+      if (score >= 70) return '商机中';
+      return '商机待验证';
+    }
+
+    function marketPlay(item) {
+      if (item.role === '管理者') return '先打管理者能力训练，承接时代光华课程资产';
+      if (item.role === '销售') return '先打销售转化、话术复制与大客户增长';
+      if (item.role === '客服/售后') return '先打服务质量、投诉处理与质检改进';
+      if (item.role === '新员工') return '先打新人快速上岗和岗位认证';
+      if (item.role === '门店/导购') return '先打连锁门店标准化和导购转化';
+      if (item.role === '主播/内容') return '先打直播成交、内容脚本和私域转化';
+      if (item.role === 'AI数字化') return '先打AI素养、业务提效和人机协同落地';
+      if (item.role === 'HR/培训') return '先打培训转化、人才发展和组织能力建设';
+      if (item.role === '采购') return '先打供应商谈判、交付保障和采购合规';
+      if (item.role === '财务') return '先打预算费用、回款付款和经营分析';
+      if (item.role === '项目交付') return '先打客户沟通、资源协同和交付确定性';
+      if (item.role === '生产/质量') return '先打现场纠偏、质量异常和安全生产';
+      if (item.role === '供应链/物流') return '先打库存交接、物流异常和供应风险';
+      if (item.role === '医药/金融/行业') return '先打强监管行业的合规沟通和行业销售';
+      if (item.role === '法务/合规') return '先打合规红线、风险提醒和危机沟通';
+      if (item.role === '中层管理') return '打管理者能力提升与领导力训练营';
+      if (item.role === '培训/HR') return '打企业培训平台升级与模板库交付';
+      if (item.role === '销售') return '打销售转化、话术复制与新人开单';
+      if (item.role === '客服/售后') return '打服务质量、投诉处理与质检改进';
+      if (item.role === '门店/零售') return '打连锁标准化、店长管理与导购转化';
+      if (item.role === '营销/内容') return '打直播/内容团队的话术转化训练';
+      if (item.role === '领导力经典') return '打时代光华管理课程资产与领导力训练转化';
+      if (item.role === 'AI转型/数智化') return '打AI素养、业务提效和人机协同落地';
+      if (item.role === '行业业务线') return '打行业化角色包与高价值定制项目';
+      if (item.role === '组织人才/HR') return '打人才发展、绩效和组织能力建设';
+      if (item.role === '合规/风险') return '打强监管行业的合规沟通与风险训练';
+      if (item.role === '高管/战略') return '打战略解码、变革沟通和组织韧性';
+      return '打职能岗位规范沟通与运营风险闭环';
+    }
+
+    function renderScenarios() {
+      const list = filteredScenarios();
+      visibleCount.textContent = list.length;
+      scenarioGrid.innerHTML = list.map(item => `
+        <article class="scenario-card ${selected.has(item.index) ? 'selected' : ''}" data-index="${item.index}">
+          <div class="scenario-top">
+            <div>
+              <h3>${item.title}</h3>
+              <div class="tags" style="margin-top:8px;">
+                <span class="tag">${item.role}</span>
+                <span class="tag pay" title="商业价值：综合客户付费意愿、售前演示价值、课程转化空间和项目复购潜力，并非价格。">${commercialValueLabel(item.pay)}</span>
+                <span class="tag source">${scenarioSubcat(item)}</span>
+                <span class="tag trend">${item.trend || '高频刚需'}</span>
+              </div>
+            </div>
+            <button class="check" aria-label="选择场景">${selected.has(item.index) ? '✓' : '✓'}</button>
+          </div>
+          <p>${item.scene}</p>
+          <p><strong style="color:var(--ink);">市场打法：</strong>${marketPlay(item)}</p>
+          <p><strong style="color:var(--ink);">训练目标：</strong>${item.target}</p>
+          <div class="score-block" aria-label="场景评分口径">
+            ${scoreRows(item).map(row => `
+              <div class="score-row ${row.cls} ${row.key === activeSort ? 'is-active' : ''}" title="${row.basis}">
+                <div class="score-label"><b>${row.title}</b><span>${row.desc}</span></div>
+                <div class="bar"><i style="--w:${row.score}%"></i></div>
+                <div class="score-value">${row.score}<span>${row.level}</span></div>
+              </div>
+            `).join('')}
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderSelection() {
+      const chosen = [...selected].map(i => scenarios[i]);
+      const count = chosen.length;
+      const percent = Math.min(100, Math.round((count / 8) * 100));
+      selectedCount.textContent = count;
+      metricSelected.textContent = count;
+      selectedBar.style.setProperty('--w', percent + '%');
+      heroSelectedBar.style.setProperty('--w', percent + '%');
+      selectedList.innerHTML = chosen.length ? chosen.map(item => `
+        <div class="selected-item"><strong>${item.title}</strong><span>${item.role} · 优先级 ${item.priority} · ${commercialValueLabel(item.pay)}</span></div>
+      `).join('') : '<div class="selected-item"><strong>尚未选择</strong><span>从左侧场景卡片点选要深入参与的方向。</span></div>';
+
+      const avgPay = chosen.length ? Math.round(chosen.reduce((sum, item) => sum + item.pay, 0) / chosen.length) : 0;
+      const avgPriority = chosen.length ? Math.round(chosen.reduce((sum, item) => sum + item.priority, 0) / chosen.length) : 0;
+      const roleSet = new Set(chosen.map(item => item.role));
+      const roleFrequency = chosen.reduce((acc, item) => {
+        acc[item.role] = (acc[item.role] || 0) + 1;
+        return acc;
+      }, {});
+      const topRole = Object.entries(roleFrequency).sort((a, b) => b[1] - a[1])[0]?.[0] || '-';
+      const decision = count >= 6 ? '建议进入专项方案' : count >= 3 ? '建议做 MVP 试点' : count > 0 ? '建议继续收敛样板' : '先选择场景';
+      const next = count >= 3
+        ? '用选中场景产出样板：课程简介、AI角色卡、对话环节、评分规则、练后推荐。'
+        : '优先选择高频且有付费意愿的角色场景，例如管理、销售、客服或新员工培训。';
+
+      recommendationBox.innerHTML = `
+        <div class="rec-row"><b>结论</b><span>${decision}</span></div>
+        <div class="rec-row"><b>首攻</b><span>${topRole === '-' ? '待选择' : marketPlay({ role: topRole })}</span></div>
+        <div class="rec-row"><b>市场面</b><span>${roleSet.size || 0} 类角色，平均商业价值 ${avgPay ? commercialValueLabel(avgPay) : '-'}。</span></div>
+        <div class="rec-row"><b>优先级</b><span>平均推荐优先级 ${avgPriority || '-'}，建议先做 3-5 个可演示样板。</span></div>
+        <div class="rec-row"><b>下一步</b><span>${next}</span></div>
+      `;
+    }
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 1300);
+    }
+
+    function renderProblems() {
+      const tabs = Object.keys(problems);
+      document.getElementById('problemTabs').innerHTML = tabs.map(tab => `
+        <button class="${tab === activeProblem ? 'active' : ''}" data-problem="${tab}">${tab}</button>
+      `).join('');
+
+      document.getElementById('problemList').innerHTML = problems[activeProblem].map(item => `
+        <div class="problem-item">
+          <div>
+            <h4>${item.title}</h4>
+            <p>${item.desc}</p>
+            <p style="margin-top:8px;"><strong style="color:var(--ink);">改进动作：</strong>${item.action}</p>
+          </div>
+          <div class="priority"><b>${item.priority}</b>推进优先级</div>
+        </div>
+      `).join('');
+    }
+
+    function levelWidth(level) {
+      return {
+        '领先': '92%',
+        '较强': '78%',
+        '中等': '62%',
+        '待补齐': '42%',
+        '待验证': '38%'
+      }[level] || '50%';
+    }
+
+    function levelTone(level) {
+      return {
+        '领先': '#eaf3ff',
+        '较强': '#edf9f2',
+        '中等': '#f3f6f9',
+        '待补齐': '#fff4e6',
+        '待验证': '#f5f1ff'
+      }[level] || '#f3f6f9';
+    }
+
+    function renderCompetitors() {
+      const dims = activeVendorView === 'all'
+        ? competitorDimensions
+        : competitorDimensions.filter(item => item.group === activeVendorView);
+      if (!dims.some(item => item.key === activeCompetitorDim)) activeCompetitorDim = dims[0]?.key || 'scene';
+      const activeDim = competitorDimensions.find(item => item.key === activeCompetitorDim) || competitorDimensions[0];
+      const visual = document.getElementById('competitorVisual');
+      const current = competitorVisual.find(vendor => vendor.name.includes('时代光华'));
+      const activeVendor = competitorVisual.find(vendor => vendor.name === activeCompetitor) || current;
+      const diagnostic = competitorDiagnostics[activeVendor.name];
+      const sourceLabel = {
+        '北森 AI陪练': '附件选型手册 + 公开页',
+        '得助智能': '官网公开页 + 案例资料',
+        '云学堂': '公开报道/公开资料',
+        '知学云 AI陪练': '公开资料',
+        '时代光华方向': '内部现状 + 策略判断'
+      };
+      visual.innerHTML = `
+        <aside class="battle-sidebar">
+          <div class="battle-side-title">对比对象</div>
+          <div class="vendor-stack">
+            ${competitorVisual.map(vendor => `
+              <button class="vendor-side-card ${vendor.name === activeVendor.name ? 'active' : ''}" data-competitor="${vendor.name}" style="--vendor-color:${vendor.color}">
+                <b>${vendor.name}</b>
+                <span>${vendor.badge}</span>
+                <span>${sourceLabel[vendor.name]}</span>
+              </button>
+            `).join('')}
+          </div>
+          <div class="basis-box">
+            <b>评估口径</b>
+            本页不做第三方客观打分，不展示伪精确分数。等级来自附件选型手册、公开资料、当前产品现状和业务判断；条形长度只是等级视觉化。
+          </div>
+        </aside>
+        <div class="battle-main">
+          <div class="battle-summary">
+            <div class="battle-kpi"><span>当前对象</span><b>${activeVendor.name.replace(' AI陪练','')}</b><small>${activeVendor.badge}</small></div>
+            <div class="battle-kpi"><span>评估维度</span><b>${dims.length}</b><small>点击下方维度切换</small></div>
+            <div class="battle-kpi"><span>证据对象</span><b>${competitorVisual.length}</b><small>竞品 + 当前方向</small></div>
+            <div class="battle-kpi"><span>判断方式</span><b>等级</b><small>领先 / 较强 / 中等 / 待补齐</small></div>
+          </div>
+          <article class="vendor-profile" style="--vendor-color:${activeVendor.color}">
+            <div class="vendor-profile-top">
+              <h3>${activeVendor.name}</h3>
+              <span class="vendor-pill">${sourceLabel[activeVendor.name]}</span>
+            </div>
+            <p>${activeVendor.summary}</p>
+            <div class="vendor-tags">${activeVendor.tags.map(tag => `<span class="mini-chip">${tag}</span>`).join('')}</div>
+          </article>
+          <div class="dimension-tabs" aria-label="竞品评估维度">
+            ${dims.map(dim => `
+              <button class="dimension-tab ${dim.key === activeCompetitorDim ? 'active' : ''}" data-competitor-dim="${dim.key}">${dim.title}</button>
+            `).join('')}
+          </div>
+          <div class="special-analysis">
+            <article class="analysis-card">
+              <b>专项威胁</b>
+              <p>${diagnostic.threat}</p>
+            </article>
+            <article class="analysis-card">
+              <b>可借鉴能力</b>
+              <p>${diagnostic.learn}</p>
+            </article>
+            <article class="analysis-card wide">
+              <b>${activeDim.title}专项判断</b>
+              <p>${competitorEvidence[activeDim.key][activeVendor.name]}</p>
+              <div class="score-lanes">
+                <div class="score-lane" style="--vendor-color:${activeVendor.color}">
+                  <label title="${activeVendor.name}">${activeVendor.name}</label>
+                  <div class="lane-bar"><i style="--score:${levelWidth(activeVendor.levels[activeDim.key])}"></i></div>
+                  <strong class="level-badge" style="background:${levelTone(activeVendor.levels[activeDim.key])}">${activeVendor.levels[activeDim.key]}</strong>
+                </div>
+                <div class="score-lane" style="--vendor-color:${current.color}">
+                  <label title="${current.name}">${current.name}</label>
+                  <div class="lane-bar"><i style="--score:${levelWidth(current.levels[activeDim.key])}"></i></div>
+                  <strong class="level-badge" style="background:${levelTone(current.levels[activeDim.key])}">${current.levels[activeDim.key]}</strong>
+                </div>
+              </div>
+            </article>
+            <article class="analysis-card wide">
+              <b>追赶动作</b>
+              <div class="analysis-steps">
+                ${diagnostic.catchup.map((item, index) => `
+                  <div class="analysis-step"><span>动作 ${index + 1}</span><p>${item}</p></div>
+                `).join('')}
+              </div>
+            </article>
+            <article class="analysis-card wide">
+              <b>超越路径</b>
+              <p>${diagnostic.surpass}</p>
+            </article>
+          </div>
+        </div>
+        <aside class="battle-insight">
+          <h3>${activeVendor.name}诊断</h3>
+          <div class="radar-box">
+            <b>${activeVendor.badge}</b>
+            ${['content','leadership','scene','ai','experience','data','freshness'].map(key => {
+              const dim = competitorDimensions.find(item => item.key === key);
+              const level = activeVendor.levels[key];
+              return `<div class="radar-row"><span>${dim.title.replace('领导力/','')}</span><i style="--w:${levelWidth(level)}"></i><strong>${level}</strong></div>`;
+            }).join('')}
+          </div>
+          <div class="action-stack">
+            <div class="action-card"><b>优先追赶</b><span>${diagnostic.catchup.join('；')}</span></div>
+            <div class="action-card"><b>专项维度</b><span>${activeDim.title}：${activeVendor.levels[activeDim.key]}</span></div>
+            <div class="action-card"><b>差异化超越</b><span>${diagnostic.surpass}</span></div>
+          </div>
+        </aside>
+      `;
+    }
+
+    document.addEventListener('click', event => {
+      const roleBtn = event.target.closest('[data-role]');
+      if (roleBtn) {
+        activeRole = roleBtn.dataset.role;
+        activeSubcat = '全部';
+        renderRoleFilters();
+        renderSummaryRoleChips();
+        renderSubcats();
+        renderScenarios();
+      }
+
+      const subcatBtn = event.target.closest('[data-subcat]');
+      if (subcatBtn) {
+        activeSubcat = subcatBtn.dataset.subcat;
+        renderSubcats();
+        renderScenarios();
+      }
+
+      const sortBtn = event.target.closest('[data-sort]');
+      if (sortBtn) {
+        activeSort = sortBtn.dataset.sort;
+        document.querySelectorAll('[data-sort]').forEach(btn => btn.classList.toggle('active', btn === sortBtn));
+        renderSortExplainer();
+        renderScenarios();
+      }
+
+      const card = event.target.closest('.scenario-card');
+      if (card) {
+        const index = Number(card.dataset.index);
+        selected.has(index) ? selected.delete(index) : selected.add(index);
+        renderScenarios();
+        renderSelection();
+        showToast(selected.has(index) ? '已加入深入参与清单' : '已从清单移除');
+      }
+
+      const problemBtn = event.target.closest('[data-problem]');
+      if (problemBtn) {
+        activeProblem = problemBtn.dataset.problem;
+        renderProblems();
+      }
+
+      const vendorBtn = event.target.closest('[data-vendor-view]');
+      if (vendorBtn) {
+        activeVendorView = vendorBtn.dataset.vendorView;
+        document.querySelectorAll('[data-vendor-view]').forEach(btn => btn.classList.toggle('active', btn === vendorBtn));
+        renderCompetitors();
+      }
+
+      const competitorBtn = event.target.closest('[data-competitor]');
+      if (competitorBtn) {
+        activeCompetitor = competitorBtn.dataset.competitor;
+        renderCompetitors();
+      }
+
+      const competitorDimBtn = event.target.closest('[data-competitor-dim]');
+      if (competitorDimBtn) {
+        activeCompetitorDim = competitorDimBtn.dataset.competitorDim;
+        renderCompetitors();
+      }
+    });
+
+    document.getElementById('clearSelection').addEventListener('click', () => {
+      selected.clear();
+      renderScenarios();
+      renderSelection();
+      showToast('已清空选择');
+    });
+
+    searchInput.addEventListener('input', renderScenarios);
+
+    const navLinks = [...document.querySelectorAll('.nav a')];
+    const sections = navLinks.map(link => document.querySelector(link.getAttribute('href')));
+    window.addEventListener('scroll', () => {
+      const current = sections.findLast(section => section && section.getBoundingClientRect().top < 110);
+      if (!current) return;
+      navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + current.id));
+    });
+
+    document.getElementById('metricTotal').textContent = scenarios.length;
+    renderRoleFilters();
+    renderSummaryRoleChips();
+    renderSubcats();
+    renderSortExplainer();
+    renderScenarios();
+    renderSelection();
+    renderProblems();
+    renderCompetitors();
+  </script>
+</body>
+</html>
+
