@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>反馈数据后台</title>
+  <style>
+    :root {
+      --page: #f5f8fc;
+      --ink: #102033;
+      --muted: #66778a;
+      --line: rgba(16,32,51,.12);
+      --blue: #2f7df6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--page);
+    }
+    .shell { width: min(1280px, calc(100% - 32px)); margin: 0 auto; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    header .shell {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    h1 { margin: 0; font-size: 20px; }
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.4fr .8fr .8fr auto auto;
+      gap: 10px;
+      padding: 18px 0;
+      align-items: end;
+    }
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    input, select, button {
+      font: inherit;
+      border-radius: 8px;
+    }
+    input, select {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 10px 11px;
+      outline: none;
+    }
+    button {
+      border: 0;
+      background: #101317;
+      color: #fff;
+      padding: 10px 13px;
+      font-weight: 760;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #eaf1fb;
+      color: #235fbf;
+      border: 1px solid rgba(47,125,246,.16);
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .stat {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .stat span { color: var(--muted); font-size: 12px; }
+    .stat b { display: block; margin-top: 4px; font-size: 22px; }
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 18px 48px rgba(15,23,42,.08);
+    }
+    .table-wrap { overflow: auto; max-height: calc(100vh - 245px); }
+    table {
+      width: 100%;
+      min-width: 1180px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #f8fafc;
+      color: #334155;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    td { color: #475569; }
+    td strong { color: var(--ink); }
+    .muted { color: var(--muted); }
+    .empty {
+      padding: 40px;
+      text-align: center;
+      color: var(--muted);
+    }
+    @media (max-width: 900px) {
+      .toolbar, .stats { grid-template-columns: 1fr; }
+      header .shell { display: grid; padding: 12px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell">
+      <h1>反馈数据后台</h1>
+      <div class="muted" id="status">请配置接口并加载数据</div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="toolbar">
+      <label>CloudBase HTTP 接口
+        <input id="endpoint" placeholder="https://.../feedback">
+      </label>
+      <label>管理员 Token
+        <input id="token" type="password" placeholder="ADMIN_TOKEN">
+      </label>
+      <label>站点
+        <select id="site">
+          <option value="ai-roleplay-demo">AI陪练 Demo</option>
+          <option value="geo-site">GEO 网站</option>
+          <option value="all">全部</option>
+        </select>
+      </label>
+      <button type="button" id="load">加载数据</button>
+      <button type="button" class="secondary" id="export">导出 CSV</button>
+    </section>
+
+    <section class="stats">
+      <div class="stat"><span>反馈总数</span><b id="statTotal">-</b></div>
+      <div class="stat"><span>有线索反馈</span><b id="statLeads">-</b></div>
+      <div class="stat"><span>可直接对客</span><b id="statReady">-</b></div>
+      <div class="stat"><span>最高频角色</span><b id="statRole">-</b></div>
+    </section>
+
+    <section class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>角色/团队</th>
+              <th>最有价值模块</th>
+              <th>对客展示</th>
+              <th>评分</th>
+              <th>线索</th>
+              <th>对客一句话</th>
+              <th>客户卡点</th>
+              <th>建议补强</th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            <tr><td colspan="9" class="empty">暂无数据</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const els = {
+      endpoint: document.getElementById('endpoint'),
+      token: document.getElementById('token'),
+      site: document.getElementById('site'),
+      load: document.getElementById('load'),
+      export: document.getElementById('export'),
+      rows: document.getElementById('rows'),
+      status: document.getElementById('status'),
+      statTotal: document.getElementById('statTotal'),
+      statLeads: document.getElementById('statLeads'),
+      statReady: document.getElementById('statReady'),
+      statRole: document.getElementById('statRole')
+    };
+    let currentRows = [];
+
+    els.endpoint.value = localStorage.getItem('feedbackAdminEndpoint') || '';
+    els.token.value = localStorage.getItem('feedbackAdminToken') || '';
+
+    function esc(value) {
+      return String(value || '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[char]));
+    }
+
+    function roleMode(rows) {
+      const counts = {};
+      rows.forEach(row => counts[row.role || '未填写'] = (counts[row.role || '未填写'] || 0) + 1);
+      return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || '-';
+    }
+
+    function renderStats(rows, total) {
+      els.statTotal.textContent = total ?? rows.length;
+      els.statLeads.textContent = rows.filter(row => String(row.hasLead || '').includes('有')).length;
+      els.statReady.textContent = rows.filter(row => String(row.customerReady || '').includes('直接')).length;
+      els.statRole.textContent = roleMode(rows);
+    }
+
+    function renderRows(rows) {
+      currentRows = rows;
+      if (!rows.length) {
+        els.rows.innerHTML = '<tr><td colspan="9" class="empty">暂无数据</td></tr>';
+        return;
+      }
+      els.rows.innerHTML = rows.map(row => `
+        <tr>
+          <td>${esc((row.submittedAt || '').replace('T', ' ').slice(0, 19))}</td>
+          <td><strong>${esc(row.role || '-')}</strong><br><span class="muted">${esc(row.team || '')} ${esc(row.name || '')}</span></td>
+          <td>${esc(row.valuableModule)}</td>
+          <td>${esc(row.customerReady)}</td>
+          <td>内容：${esc(row.contentScore)}<br>销售：${esc(row.salesScore)}</td>
+          <td>${esc(row.hasLead)}<br><span class="muted">${esc(row.customerType)}</span></td>
+          <td>${esc(row.customerPitch)}</td>
+          <td>${esc(row.customerConcern)}</td>
+          <td>${esc(row.improve)}<br><span class="muted">${esc(row.notes)}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadData() {
+      const endpoint = els.endpoint.value.trim();
+      const token = els.token.value.trim();
+      if (!endpoint || !token) {
+        els.status.textContent = '请先填写接口和管理员 Token';
+        return;
+      }
+      localStorage.setItem('feedbackAdminEndpoint', endpoint);
+      localStorage.setItem('feedbackAdminToken', token);
+      els.status.textContent = '正在加载...';
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ action: 'list', site: els.site.value, limit: 300 })
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || '加载失败');
+      renderRows(data.rows || []);
+      renderStats(data.rows || [], data.total);
+      els.status.textContent = `已加载 ${data.rows.length} 条，合计 ${data.total} 条`;
+    }
+
+    function exportCsv() {
+      const headers = ['submittedAt','site','name','team','role','usage','valuableModule','customerReady','contentScore','salesScore','hasLead','customerType','improve','customerPitch','customerConcern','notes'];
+      const lines = [headers.join(',')].concat(currentRows.map(row => headers.map(key => `"${String(row[key] || '').replace(/"/g, '""')}"`).join(',')));
+      const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `feedback-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    els.load.addEventListener('click', () => loadData().catch(error => {
+      els.status.textContent = error.message;
+    }));
+    els.export.addEventListener('click', exportCsv);
+  </script>
+</body>
+</html>
